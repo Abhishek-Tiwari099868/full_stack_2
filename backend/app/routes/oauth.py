@@ -1,23 +1,20 @@
-from flask import Blueprint, request, redirect, url_for, jsonify, current_app
+from flask import Blueprint, request, redirect, url_for, current_app
 from app.utils.oauth import oauth
 from app.services.oauth.google_service import handle_google_user
 from app.services.oauth.github_service import handle_github_user
-from app.models.user import User
-from flask_jwt_extended import create_access_token
 import urllib.parse
-import os
 
 oauth_bp = Blueprint("oauth", __name__, url_prefix="/api/oauth")
 
+
+def _default_frontend_url():
+    return current_app.config.get("FRONTEND_URL", "http://127.0.0.1:5500")
+
+
 @oauth_bp.route("/google/login")
 def google_login():
-
-    frontend_url = request.args.get("frontend_url") or request.referrer or "http://127.0.0.1:5500/interviewai_humanified.html"
-
+    frontend_url = request.args.get("frontend_url") or request.referrer or _default_frontend_url()
     redirect_uri = url_for("oauth.google_callback", _external=True)
-
-    print("REDIRECT URI =", redirect_uri)
-
     return oauth.google.authorize_redirect(
         redirect_uri,
         state=frontend_url,
@@ -27,9 +24,8 @@ def google_login():
 
 @oauth_bp.route("/google/callback")
 def google_callback():
-    frontend_url = request.args.get("state") or "http://127.0.0.1:5500/interviewai_humanified.html"
+    frontend_url = request.args.get("state") or _default_frontend_url()
 
-    # Handle client-side cancel or OAuth error parameter
     error = request.args.get("error")
     if error:
         error_desc = request.args.get("error_description") or error
@@ -44,21 +40,20 @@ def google_callback():
         jwt_token, user = handle_google_user(user_info)
         return redirect(f"{frontend_url}?token={jwt_token}")
     except Exception as e:
-        error_msg = f"google_auth_failed: {str(e)}"
-        return redirect(f"{frontend_url}?error={urllib.parse.quote(error_msg)}")
+        current_app.logger.error(f"Google OAuth failed: {e}")
+        return redirect(f"{frontend_url}?error=oauth_failed")
 
 
 @oauth_bp.route("/github/login")
 def github_login():
-    frontend_url = request.args.get("frontend_url") or request.referrer or "http://127.0.0.1:5500/interviewai_humanified.html"
-
+    frontend_url = request.args.get("frontend_url") or request.referrer or _default_frontend_url()
     redirect_uri = url_for("oauth.github_callback", _external=True)
     return oauth.github.authorize_redirect(redirect_uri, state=frontend_url)
 
 
 @oauth_bp.route("/github/callback")
 def github_callback():
-    frontend_url = request.args.get("state") or "http://127.0.0.1:5500/interviewai_humanified.html"
+    frontend_url = request.args.get("state") or _default_frontend_url()
 
     error = request.args.get("error")
     if error:
@@ -96,5 +91,5 @@ def github_callback():
         jwt_token, user = handle_github_user(user_info)
         return redirect(f"{frontend_url}?token={jwt_token}")
     except Exception as e:
-        error_msg = f"github_auth_failed: {str(e)}"
-        return redirect(f"{frontend_url}?error={urllib.parse.quote(error_msg)}")
+        current_app.logger.error(f"GitHub OAuth failed: {e}")
+        return redirect(f"{frontend_url}?error=oauth_failed")

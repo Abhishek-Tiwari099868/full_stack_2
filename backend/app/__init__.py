@@ -12,9 +12,10 @@ from flask_cors import CORS
 
 def create_app():
     app = Flask(__name__)
-    CORS(app)
-
     app.config.from_object(Config)
+
+    CORS(app, origins=[app.config["FRONTEND_URL"]])
+
     app.register_blueprint(auth_bp)
     app.register_blueprint(oauth_bp)
     app.register_blueprint(resume_bp)
