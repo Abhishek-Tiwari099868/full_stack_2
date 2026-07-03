@@ -1,0 +1,2733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InterviewAI — AI Mock Interview Platform</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23a855f7'/%3E%3Cstop offset='100%25' stop-color='%23ec4899'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23g)'/%3E%3Cpath d='M36 10 L24 34 H32 L28 54 L44 28 H35 Z' fill='white' opacity='0.95'/%3E%3C/svg%3E">
+  <link rel="shortcut icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23a855f7'/%3E%3Cstop offset='100%25' stop-color='%23ec4899'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23g)'/%3E%3Cpath d='M36 10 L24 34 H32 L28 54 L44 28 H35 Z' fill='white' opacity='0.95'/%3E%3C/svg%3E">
+  <meta name="theme-color" content="#a855f7">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Icons — preload to avoid FOIT -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons-webfont.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons-webfont.min.css"></noscript>
+  
+  <link rel="stylesheet" href="interviewai.css">
+</head>
+<body>
+
+  <!-- Canvas dynamic background element -->
+  <div id="aurora-bg"></div>
+
+  <!-- Floating backdrop glow effects -->
+  <div class="bg-glow bg-glow-1" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow-2" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow-3" aria-hidden="true"></div>
+
+  <!-- Hidden text for screen readers -->
+  <h2 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">InterviewAI — AI mock interview platform</h2>
+
+  <!-- Gradient definitions for SVGs (Used multiple times) -->
+  <svg style="width:0;height:0;position:absolute;">
+    <defs>
+      <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#6366f1" />
+        <stop offset="100%" stop-color="#a855f7" />
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <!-- NAVIGATION BAR -->
+  <nav id="nav">
+    <div class="logo" id="logo-home">
+      <div class="logo-sq" aria-hidden="true">
+        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+          <path d="M22 6 L14 22 H20 L17 34 L28 18 H21 Z" fill="white" opacity="0.95"/>
+        </svg>
+      </div>
+      InterviewAI
+    </div>
+    <div class="nl">
+      <button id="nl-feat">Features</button>
+      <button id="nl-how">How it works</button>
+      <button id="nl-rev">Reviews</button>
+      <button id="nl-price">Pricing</button>
+    </div>
+    <div class="nr" id="nav-auth-buttons">
+      <button class="ghost" id="btn-login">Log in</button>
+      <button class="solid" id="btn-nav-signup">Sign up free</button>
+    </div>
+    <!-- Profile dropdown when logged in -->
+    <div class="user-profile-nav" id="nav-profile-menu">
+      <div class="avatar-btn" id="avatar-btn-initials">JD</div>
+      <div class="profile-dropdown" id="profile-dropdown-menu">
+        <div class="profile-dropdown-info">
+          <div class="p-name" id="dropdown-username">John Doe</div>
+          <div class="p-email" id="dropdown-useremail">john.doe@gmail.com</div>
+        </div>
+        <button id="drop-dashboard"><i class="ti ti-layout-dashboard"></i> Dashboard</button>
+        <button id="drop-settings"><i class="ti ti-settings"></i> Settings</button>
+        <button class="logout-btn" id="drop-logout"><i class="ti ti-logout"></i> Log out</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <section id="hero" class="reveal-item">
+    <h1 class="hero-h1">Practice interviews<br>like it's <span class="accent">the real thing</span></h1>
+    <p class="hero-p">Upload your resume, pick a role, and get grilled by AI — with instant, honest feedback on every answer. No fluff, just real prep.</p>
+    <div class="hero-btns">
+      <button class="hbtn-dark" id="btn-hero-start">
+        <i class="ti ti-player-play" aria-hidden="true"></i> Start for free
+      </button>
+      <button class="hbtn-out" id="btn-hero-watch">
+        <span class="play-ring">▶</span> See how it works
+      </button>
+    </div>
+    <div class="social-proof">
+      <span class="star-row">★★★★★</span>
+      <span>4.9 rating</span>
+      <span class="sp-divider"></span>
+      <span>12,000+ students placed</span>
+      <span class="sp-divider"></span>
+      <span>Free forever plan</span>
+    </div>
+  </section>
+
+  <!-- MOCKUP CONTAINER -->
+  <div id="mockup-wrap" class="reveal-item">
+    <div class="mframe">
+      <div class="mbar">
+        <div class="mdot" style="background:#ff5f57"></div>
+        <div class="mdot" style="background:#febc2e"></div>
+        <div class="mdot" style="background:#28c840"></div>
+        <div class="urlbar">interviewai.app · dashboard</div>
+        <div class="theme-quick-switch" id="nav-theme-toggle" title="Switch theme"><i class="ti ti-moon"></i></div>
+      </div>
+      <div class="mbody">
+        <!-- Sidebar Navigation inside dashboard -->
+        <div class="msidebar">
+          <button class="mitem on" data-tab="dashboard"><i class="ti ti-layout-dashboard"></i>Dashboard</button>
+          <button class="mitem" data-tab="interviews"><i class="ti ti-microphone"></i>Interviews</button>
+          <button class="mitem" data-tab="resume"><i class="ti ti-file-text"></i>Resume</button>
+          <button class="mitem" data-tab="analytics"><i class="ti ti-chart-bar"></i>Analytics</button>
+          <button class="mitem" data-tab="settings"><i class="ti ti-settings"></i>Settings</button>
+        </div>
+        <!-- Main Dashboard View Container -->
+        <div class="mmain" id="dashboard-content-box">
+          <!-- Views populated dynamically via Javascript -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTNERS LOGOS -->
+  <div id="logos" class="reveal-item">
+    <span>Persistent</span><span>Mphasis</span><span>Hexaware</span><span>Wipro</span><span>Infosys</span>
+  </div>
+
+  <!-- FEATURES -->
+  <section class="sec" id="features-sec">
+    <div class="reveal-item">
+      <div class="sec-lbl">Features</div>
+      <div class="sec-h">Built for students who want<br>to actually <span class="accent">get placed</span></div>
+      <p class="sec-p">Not another YouTube playlist. InterviewAI makes you practice, judges your answers, and tells you exactly what to fix.</p>
+    </div>
+    <div class="fgrid">
+
+      <div class="fcard reveal-item">
+        <div class="fcard-bg"></div>
+        <svg class="fcard-img" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="12" y="8" width="44" height="56" rx="6" fill="rgba(99,102,241,0.1)" stroke="rgba(99,102,241,0.25)" stroke-width="1.5"/>
+            <rect x="20" y="20" width="28" height="3" rx="1.5" fill="rgba(99,102,241,0.35)"/>
+            <rect x="20" y="28" width="20" height="2.5" rx="1.25" fill="rgba(99,102,241,0.2)"/>
+            <rect x="20" y="34" width="24" height="2.5" rx="1.25" fill="rgba(99,102,241,0.2)"/>
+            <rect x="20" y="40" width="16" height="2.5" rx="1.25" fill="rgba(99,102,241,0.2)"/>
+            <circle cx="58" cy="54" r="14" fill="rgba(168,85,247,0.15)" stroke="rgba(168,85,247,0.3)" stroke-width="1.5"/>
+            <path d="M53 54 L56 57 L63 51" stroke="rgba(168,85,247,0.8)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        <span class="fcard-tag" style="background:var(--bg-accent);color:var(--text-accent)">AI</span>
+        <div class="ficon-wrap">
+          <div class="ficon" style="background:var(--bg-accent)">
+            <i class="ti ti-file-search" style="color:var(--text-accent);font-size:22px" aria-hidden="true"></i>
+          </div>
+        </div>
+        <h3>Knows your resume</h3>
+        <p>Upload your CV and AI extracts your projects, skills, and gaps — so every question is relevant to you, not some generic candidate.</p>
+      </div>
+
+      <div class="fcard reveal-item">
+        <div class="fcard-bg" style="background-image:radial-gradient(circle,rgba(16,185,129,0.13) 1px,transparent 1px)"></div>
+        <svg class="fcard-img" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="8" y="14" width="46" height="32" rx="8" fill="rgba(16,185,129,0.1)" stroke="rgba(16,185,129,0.25)" stroke-width="1.5"/>
+            <rect x="16" y="22" width="30" height="2.5" rx="1.25" fill="rgba(16,185,129,0.3)"/>
+            <rect x="16" y="28" width="22" height="2.5" rx="1.25" fill="rgba(16,185,129,0.2)"/>
+            <path d="M14 46 L20 38 H8 Z" fill="rgba(16,185,129,0.15)" stroke="rgba(16,185,129,0.25)" stroke-width="1"/>
+            <circle cx="60" cy="26" r="13" fill="rgba(16,185,129,0.12)" stroke="rgba(16,185,129,0.3)" stroke-width="1.5"/>
+            <path d="M55 26 L58 22 L65 30" stroke="rgba(16,185,129,0.7)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="60" cy="26" r="3" fill="rgba(16,185,129,0.4)"/>
+          </svg>
+        <span class="fcard-tag" style="background:var(--bg-success);color:var(--text-success)">Live</span>
+        <div class="ficon-wrap">
+          <div class="ficon" style="background:var(--bg-success)">
+            <i class="ti ti-message-bolt" style="color:var(--text-success);font-size:22px" aria-hidden="true"></i>
+          </div>
+        </div>
+        <h3>Brutally honest feedback</h3>
+        <p>Gemini 1.5 Pro scores your answer on depth, clarity, and structure — instantly. No waiting, no vague "good job" responses.</p>
+      </div>
+
+      <div class="fcard reveal-item">
+        <div class="fcard-bg" style="background-image:radial-gradient(circle,rgba(245,158,11,0.13) 1px,transparent 1px)"></div>
+        <svg class="fcard-img" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="8" y="52" width="10" height="18" rx="3" fill="rgba(245,158,11,0.25)" stroke="rgba(245,158,11,0.4)" stroke-width="1.2"/>
+            <rect x="22" y="40" width="10" height="30" rx="3" fill="rgba(245,158,11,0.35)" stroke="rgba(245,158,11,0.4)" stroke-width="1.2"/>
+            <rect x="36" y="28" width="10" height="42" rx="3" fill="rgba(245,158,11,0.5)" stroke="rgba(245,158,11,0.5)" stroke-width="1.2"/>
+            <rect x="50" y="16" width="10" height="54" rx="3" fill="rgba(245,158,11,0.7)" stroke="rgba(245,158,11,0.6)" stroke-width="1.2"/>
+            <path d="M12 50 L27 38 L41 26 L55 14" stroke="rgba(245,158,11,0.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 2"/>
+            <circle cx="55" cy="14" r="4" fill="rgba(245,158,11,0.9)"/>
+          </svg>
+        <span class="fcard-tag" style="background:var(--bg-warning);color:var(--text-warning)">Stats</span>
+        <div class="ficon-wrap">
+          <div class="ficon" style="background:var(--bg-warning)">
+            <i class="ti ti-trending-up" style="color:var(--text-warning);font-size:22px" aria-hidden="true"></i>
+          </div>
+        </div>
+        <h3>You can see yourself improve</h3>
+        <p>Your score history, weak spots, and strongest topics — all in a dashboard you'll actually want to open every morning.</p>
+      </div>
+
+      <div class="fcard reveal-item">
+        <div class="fcard-bg"></div>
+        <svg class="fcard-img" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="6" y="10" width="32" height="22" rx="6" fill="rgba(99,102,241,0.1)" stroke="rgba(99,102,241,0.3)" stroke-width="1.5"/>
+            <rect x="42" y="10" width="32" height="22" rx="6" fill="rgba(168,85,247,0.1)" stroke="rgba(168,85,247,0.3)" stroke-width="1.5"/>
+            <rect x="6" y="48" width="32" height="22" rx="6" fill="rgba(236,72,153,0.1)" stroke="rgba(236,72,153,0.3)" stroke-width="1.5"/>
+            <rect x="42" y="48" width="32" height="22" rx="6" fill="rgba(16,185,129,0.1)" stroke="rgba(16,185,129,0.3)" stroke-width="1.5"/>
+            <text x="22" y="25" text-anchor="middle" font-size="7" fill="rgba(99,102,241,0.8)" font-family="monospace" font-weight="700">SDE</text>
+            <text x="58" y="25" text-anchor="middle" font-size="7" fill="rgba(168,85,247,0.8)" font-family="monospace" font-weight="700">PM</text>
+            <text x="22" y="63" text-anchor="middle" font-size="6" fill="rgba(236,72,153,0.8)" font-family="monospace" font-weight="700">DATA</text>
+            <text x="58" y="63" text-anchor="middle" font-size="6" fill="rgba(16,185,129,0.8)" font-family="monospace" font-weight="700">+46</text>
+          </svg>
+        <span class="fcard-tag" style="background:var(--bg-accent);color:var(--text-accent)">50+</span>
+        <div class="ficon-wrap">
+          <div class="ficon" style="background:var(--bg-accent)">
+            <i class="ti ti-list-search" style="color:var(--text-accent);font-size:22px" aria-hidden="true"></i>
+          </div>
+        </div>
+        <h3>50+ role categories</h3>
+        <p>SDE, backend, frontend, data science, PM — pick your role and the AI tailors its entire question bank to match what companies actually ask.</p>
+      </div>
+
+      <div class="fcard reveal-item">
+        <div class="fcard-bg" style="background-image:radial-gradient(circle,rgba(16,185,129,0.13) 1px,transparent 1px)"></div>
+        <svg class="fcard-img" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M40 10 L62 20 L62 40 C62 54 52 64 40 70 C28 64 18 54 18 40 L18 20 Z" fill="rgba(16,185,129,0.1)" stroke="rgba(16,185,129,0.3)" stroke-width="1.5"/>
+            <path d="M40 18 L56 26 L56 40 C56 51 48 59 40 64 C32 59 24 51 24 40 L24 26 Z" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.2)" stroke-width="1"/>
+            <path d="M32 40 L37 45 L48 34" stroke="rgba(16,185,129,0.9)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        <span class="fcard-tag" style="background:var(--bg-success);color:var(--text-success)">Safe</span>
+        <div class="ficon-wrap">
+          <div class="ficon" style="background:var(--bg-success)">
+            <i class="ti ti-shield-check" style="color:var(--text-success);font-size:22px" aria-hidden="true"></i>
+          </div>
+        </div>
+        <h3>Secure and private</h3>
+        <p>JWT auth, Google login, bcrypt hashing. Your resume and answers stay yours — never shared, never sold.</p>
+      </div>
+
+      <div class="fcard reveal-item">
+        <div class="fcard-bg" style="background-image:radial-gradient(circle,rgba(245,158,11,0.13) 1px,transparent 1px)"></div>
+        <svg class="fcard-img" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="10" y="38" width="60" height="32" rx="4" fill="rgba(245,158,11,0.1)" stroke="rgba(245,158,11,0.3)" stroke-width="1.5"/>
+            <path d="M10 42 L40 26 L70 42" fill="rgba(245,158,11,0.15)" stroke="rgba(245,158,11,0.4)" stroke-width="1.5"/>
+            <rect x="30" y="52" width="20" height="18" rx="3" fill="rgba(245,158,11,0.2)" stroke="rgba(245,158,11,0.35)" stroke-width="1.2"/>
+            <circle cx="40" cy="14" r="8" fill="rgba(245,158,11,0.2)" stroke="rgba(245,158,11,0.4)" stroke-width="1.5"/>
+            <path d="M36 14 L39 17 L44 11" stroke="rgba(245,158,11,0.9)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        <span class="fcard-tag" style="background:var(--bg-warning);color:var(--text-warning)">Admin</span>
+        <div class="ficon-wrap">
+          <div class="ficon" style="background:var(--bg-warning)">
+            <i class="ti ti-building" style="color:var(--text-warning);font-size:22px" aria-hidden="true"></i>
+          </div>
+        </div>
+        <h3>For colleges too</h3>
+        <p>Placement coordinators get an admin panel to monitor sessions, configure categories, and track student readiness across the batch.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="sec" id="how-sec">
+    <div class="cx reveal-item">
+      <div class="sec-lbl">How it works</div>
+      <div class="sec-h">Go from zero to<br><span class="accent">offer-ready</span> in 4 steps</div>
+    </div>
+    <div class="hgrid">
+      <div class="hstep reveal-item">
+        <div class="hline"></div>
+        <div class="hnum">1</div>
+        <h4>Create your profile</h4>
+        <p>Sign up with Google or email. Tell us your target role and experience level — takes 90 seconds.</p>
+      </div>
+      <div class="hstep reveal-item">
+        <div class="hline"></div>
+        <div class="hnum">2</div>
+        <h4>Upload your resume</h4>
+        <p>AI reads it and extracts everything — projects, tech stack, gaps. Your questions are built from this.</p>
+      </div>
+      <div class="hstep reveal-item">
+        <div class="hline"></div>
+        <div class="hnum">3</div>
+        <h4>Start a mock interview</h4>
+        <p>Answer out loud or in text. AI scores every response in real time — no waiting for the round to end.</p>
+      </div>
+      <div class="hstep reveal-item">
+        <div class="hnum">4</div>
+        <h4>Review and repeat</h4>
+        <p>Check your dashboard. See the exact questions you fumbled. Come back tomorrow and do it again.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section class="sec" id="reviews-sec">
+    <div class="cx reveal-item">
+      <div class="sec-lbl">Real students, real results</div>
+      <div class="sec-h">They were nervous.<br>Now they're <span class="accent">employed</span>.</div>
+    </div>
+    <div class="tgrid">
+      <div class="tcard reveal-item">
+        <div class="tstars">★★★★★</div>
+        <blockquote>"The AI feedback was uncomfortably accurate. It told me I was rambling in my system design answers and gave me a score of 58. Two weeks later I was hitting 84. That's the kind of honest feedback your college placement cell will never give you."</blockquote>
+        <div class="tauth">
+          <div class="tav" style="background:var(--bg-accent);color:var(--text-accent)">RS</div>
+          <div><h5>Rohit Shah</h5><small>Placed at Persistent Systems</small></div>
+        </div>
+      </div>
+      <div class="tcard reveal-item">
+        <div class="tstars">★★★★★</div>
+        <blockquote>"I uploaded my resume and the very first question was about a project I'd buried in the third bullet point. It actually read my CV. That felt real. And scary. And exactly what I needed."</blockquote>
+        <div class="tauth">
+          <div class="tav" style="background:var(--bg-success);color:var(--text-success)">PK</div>
+          <div><h5>Priya Kulkarni</h5><small>Placed at Mphasis</small></div>
+        </div>
+      </div>
+      <div class="tcard reveal-item">
+        <div class="tstars">★★★★★</div>
+        <blockquote>"3 weeks, every single morning before college. My score went from 58 to 86. I walked into round 2 and felt like I'd already done this interview 40 times. Because I had."</blockquote>
+        <div class="tauth">
+          <div class="tav" style="background:var(--bg-warning);color:var(--text-warning)">AM</div>
+          <div><h5>Aarav Mehta</h5><small>Placed at Hexaware</small></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="cta-sec" class="reveal-item">
+    <div class="cta-box">
+      <h2>You can't get better at interviews<br>by watching videos about interviews.</h2>
+      <p>Start a free session. Get uncomfortable. Get hired.</p>
+      <div class="cta-btns">
+        <button class="hbtn-dark" id="btn-cta-start">Create free account</button>
+        <button class="hbtn-out" id="btn-cta-gh">View on GitHub</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 InterviewAI · Built by Abhishek · Mumbai</p>
+    <div class="fl">
+      <button id="ft-privacy">Privacy</button>
+      <button id="ft-terms">Terms</button>
+      <button id="ft-github">GitHub</button>
+      <button id="ft-contact">Contact</button>
+    </div>
+  </footer>
+
+  <!-- DYNAMIC TOAST CONTAINER -->
+  <div id="toast"></div>
+
+  <!-- AUTHENTICATION MODAL (LOGIN/SIGNUP) -->
+  <div class="modal-overlay" id="auth-modal">
+    <div class="modal-card auth-modal-card">
+      <button class="close-modal-btn" id="btn-close-auth"><i class="ti ti-x"></i></button>
+      
+      <!-- Confetti overlay -->
+      <div class="celebration-overlay" id="signup-celebration"></div>
+      
+      <div class="auth-split-container">
+        <!-- Left Pane: Benefits / Trust -->
+        <div class="auth-split-left">
+          <div class="auth-left-logo">
+            <div class="logo-sq"><i class="ti ti-brain" aria-hidden="true"></i></div>
+            <span>InterviewAI</span>
+          </div>
+          <div class="auth-left-content">
+            <h3>Nail your next interview with InterviewAI.</h3>
+            <ul class="auth-benefits-list">
+              <li><i class="ti ti-circle-check"></i> <span>Get tailored questions from your CV</span></li>
+              <li><i class="ti ti-circle-check"></i> <span>Real-time STAR analysis & voice grades</span></li>
+              <li><i class="ti ti-circle-check"></i> <span>Free start plan, upgrade anytime</span></li>
+              <li><i class="ti ti-circle-check"></i> <span>12,000+ students already placed</span></li>
+            </ul>
+          </div>
+          <div class="auth-testimonial-snippet">
+            <p>"My score went from 58 to 86 in weeks. I walked in feeling like I'd done this 40 times."</p>
+            <cite>— Aarav Mehta (Hexaware Placed)</cite>
+          </div>
+        </div>
+        
+        <!-- Right Pane: Forms -->
+        <div class="auth-split-right">
+          <div class="auth-tabs">
+            <button class="auth-tab active" id="tab-login-btn">Log In</button>
+            <button class="auth-tab" id="tab-signup-btn">Sign Up</button>
+          </div>
+          
+          <!-- Login View -->
+          <form class="auth-form-view active" id="form-login" onsubmit="event.preventDefault();">
+            <div class="form-group">
+              <label for="login-email">Email Address</label>
+              <input type="email" id="login-email" class="form-input" placeholder="you@example.com" required>
+              <div class="form-error-msg" id="err-login-email"><i class="ti ti-alert-circle"></i> Please enter a valid email.</div>
+            </div>
+            <div class="form-group">
+              <label for="login-password">Password</label>
+              <input type="password" id="login-password" class="form-input" placeholder="••••••••" required>
+              <div class="form-error-msg" id="err-login-password"><i class="ti ti-alert-circle"></i> Password must be at least 6 characters.</div>
+            </div>
+            <button type="submit" class="auth-submit-btn" id="btn-submit-login">
+              Log In <i class="ti ti-arrow-right"></i>
+            </button>
+          </form>
+
+          <!-- Signup View -->
+          <form class="auth-form-view" id="form-signup" onsubmit="event.preventDefault();">
+            <div class="form-group">
+              <label for="signup-name">Full Name</label>
+              <div class="input-with-icon">
+                <input type="text" id="signup-name" class="form-input" placeholder="John Doe" required>
+                <i class="validation-status-icon ti ti-circle-x" id="val-icon-signup-name"></i>
+              </div>
+              <div class="form-error-msg" id="err-signup-name"><i class="ti ti-alert-circle"></i> Name is required.</div>
+            </div>
+            <div class="form-group">
+              <label for="signup-email">Email Address</label>
+              <div class="input-with-icon">
+                <input type="email" id="signup-email" class="form-input" placeholder="you@example.com" required>
+                <i class="validation-status-icon ti ti-circle-x" id="val-icon-signup-email"></i>
+              </div>
+              <div class="form-error-msg" id="err-signup-email"><i class="ti ti-alert-circle"></i> Enter a valid email address.</div>
+            </div>
+            <div class="form-group">
+              <label for="signup-password">Password</label>
+              <input type="password" id="signup-password" class="form-input" placeholder="Min. 6 characters" required>
+              <div class="pw-strength-meter" id="pw-meter"><div class="pw-strength-bar" id="pw-bar"></div></div>
+              <div class="pw-strength-text" id="pw-text" style="display:none;">Strength: <span id="pw-label" style="font-weight:700;">Weak</span></div>
+              <ul class="pw-checklist" id="pw-checklist">
+                <li class="pw-check-item" id="chk-length"><i class="ti ti-circle-x"></i> At least 6 characters</li>
+                <li class="pw-check-item" id="chk-number"><i class="ti ti-circle-x"></i> Contains a number</li>
+              </ul>
+              <div class="form-error-msg" id="err-signup-password"><i class="ti ti-alert-circle"></i> Password is too weak.</div>
+            </div>
+            
+            <!-- Gamified Avatar Picker -->
+            <div class="form-group">
+              <label>Choose Avatar Style</label>
+              <div class="avatar-picker-grid">
+                <div class="avatar-option active" data-color="purple" style="background: linear-gradient(135deg, #6366f1, #a855f7)">JD</div>
+                <div class="avatar-option" data-color="blue" style="background: linear-gradient(135deg, #3b82f6, #06b6d4)">JD</div>
+                <div class="avatar-option" data-color="emerald" style="background: linear-gradient(135deg, #10b981, #3b82f6)">JD</div>
+                <div class="avatar-option" data-color="amber" style="background: linear-gradient(135deg, #f59e0b, #e11d48)">JD</div>
+                <div class="avatar-option" data-color="rose" style="background: linear-gradient(135deg, #ec4899, #f43f5e)">JD</div>
+                <div class="avatar-option" data-color="indigo" style="background: linear-gradient(135deg, #4f46e5, #06b6d4)">JD</div>
+              </div>
+            </div>
+            
+            <button type="submit" class="auth-submit-btn" id="btn-submit-signup" style="margin-top: 12px;">
+              Create Free Account <i class="ti ti-user-plus"></i>
+            </button>
+          </form>
+
+          <div class="social-auth-divider">Or continue with</div>
+          <div class="social-auth-btns">
+            <button class="social-auth-btn" id="btn-google-auth">
+              <svg viewBox="0 0 24 24" width="18" height="18" style="margin-right: 8px; vertical-align: middle;" xmlns="http://www.w3.org/2000/svg">
+                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
+                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/>
+              </svg>
+              Continue with Google
+            </button>
+            <button class="social-auth-btn" id="btn-github-auth">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" style="margin-right: 8px; vertical-align: middle;" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+              </svg>
+              Continue with GitHub
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRICING MODAL -->
+  <div class="modal-overlay" id="pricing-modal">
+    <div class="modal-card">
+      <button class="close-modal-btn" id="btn-close-pricing"><i class="ti ti-x"></i></button>
+      <h3 style="font-size:20px;margin-bottom:6px;text-align:center;">Choose Your Preparation Plan</h3>
+      <p style="font-size:13px;color:var(--text-secondary);text-align:center;margin-bottom:20px;">Accelerate your placement ready journey with unlimited AI grading.</p>
+      
+      <div class="cx">
+        <div class="billing-toggle">
+          <button class="active" id="btn-bill-monthly">Monthly</button>
+          <button id="btn-bill-yearly">Yearly (Save 35%)</button>
+        </div>
+      </div>
+
+      <div class="pricing-cards">
+        <!-- Free Plan -->
+        <div class="pricing-card" data-plan="Free">
+          <div class="pricing-card-details">
+            <h5>Free Starter</h5>
+            <p>1 session / week · Basic parsed resume</p>
+          </div>
+          <div class="pricing-card-price">
+            <div class="p-amt">$0</div>
+            <div class="p-per">forever</div>
+          </div>
+        </div>
+
+        <!-- Pro Plan -->
+        <div class="pricing-card recommended" data-plan="Pro">
+          <div class="pricing-card-details">
+            <h5>Pro Candidate</h5>
+            <p>Unlimited sessions · Deep behavioral analysis</p>
+          </div>
+          <div class="pricing-card-price">
+            <div class="p-amt" id="pricing-pro-amount">$19</div>
+            <div class="p-per" id="pricing-pro-period">/ month</div>
+          </div>
+        </div>
+
+        <!-- College Plan -->
+        <div class="pricing-card" data-plan="College">
+          <div class="pricing-card-details">
+            <h5>College Batch</h5>
+            <p>Admin panel · Custom category config</p>
+          </div>
+          <div class="pricing-card-price">
+            <div class="p-amt">$6</div>
+            <div class="p-per">/ user / mo</div>
+          </div>
+        </div>
+      </div>
+
+      <button class="pricing-select-btn" id="btn-select-pricing-plan">Upgrade to Pro Now</button>
+    </div>
+  </div>
+
+  <!-- INTERVIEW SIMULATOR MODAL OVERLAY -->
+  <div class="modal-overlay" id="simulator-modal">
+    <div class="modal-card simulator-modal">
+      <button class="close-modal-btn" id="btn-close-simulator"><i class="ti ti-x"></i></button>
+      
+      <!-- STEP 1: Select Role -->
+      <div class="sim-step-view active" id="sim-step-role">
+        <h4 style="font-size:18px;margin-bottom:4px;">Configure Mock Interview</h4>
+        <p style="font-size:12px;color:var(--text-secondary);">Select the style of interview you want to practice today.</p>
+        
+        <div class="sim-role-grid">
+          <div class="sim-role-card active" data-role="backend">
+            <i class="ti ti-server"></i>
+            <h6>Backend Engineering</h6>
+          </div>
+          <div class="sim-role-card" data-role="dsa">
+            <i class="ti ti-binary"></i>
+            <h6>DSA & Algorithms</h6>
+          </div>
+          <div class="sim-role-card" data-role="behavioral">
+            <i class="ti ti-messages"></i>
+            <h6>STAR Behavioural</h6>
+          </div>
+          <div class="sim-role-card" data-role="system">
+            <i class="ti ti-git-branch"></i>
+            <h6>System Design</h6>
+          </div>
+        </div>
+
+        <button class="sim-btn sim-btn-primary" id="btn-sim-start-grill" style="margin-top:16px;width:100%;justify-content:center;">
+          Start Interview Session <i class="ti ti-microphone"></i>
+        </button>
+      </div>
+
+      <!-- STEP 2: The Interview Chat Interface -->
+      <div class="sim-step-view" id="sim-step-interview">
+        <div class="sim-avatar-wrap">
+          <div class="sim-avatar" id="sim-speaking-avatar">
+            <i class="ti ti-user-voice"></i>
+            <div class="sim-avatar-pulse" id="avatar-pulse-circle"></div>
+          </div>
+          <div class="sim-question-text" id="sim-active-question">
+            Initializing AI interviewer...
+          </div>
+        </div>
+
+        <div class="sim-audio-canvas-wrap" id="sim-mic-canvas-wrap">
+          <canvas class="sim-audio-canvas" id="sim-mic-canvas"></canvas>
+        </div>
+
+        <textarea class="sim-textarea" id="sim-response-input" placeholder="Type your answer here, or click the mic button to speak..."></textarea>
+        
+        <div class="sim-action-row">
+          <button class="sim-btn sim-btn-secondary" id="btn-sim-mic">
+            <i class="ti ti-microphone"></i> Answer via Mic
+          </button>
+          <button class="sim-btn sim-btn-secondary" id="btn-sim-autoanswer">
+            <i class="ti ti-wand"></i> Auto-fill Answer
+          </button>
+          <button class="sim-btn sim-btn-primary" id="btn-sim-submit">
+            Submit Answer <i class="ti ti-arrow-up-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 3: Grading / thinking progress -->
+      <div class="sim-step-view" id="sim-step-thinking">
+        <div class="sim-thinking">
+          <div class="thinking-spinner"></div>
+          <h5 style="font-size:16px;" id="sim-thinking-status">Gemini 1.5 Pro is analyzing your answer...</h5>
+          <p style="font-size:12px;color:var(--text-muted);text-align:center;">Evaluating communication clarity, structural methodology (STAR) and technical depth...</p>
+        </div>
+      </div>
+
+      <!-- STEP 4: Analytical Feedback Display -->
+      <div class="sim-step-view" id="sim-step-feedback">
+        <h4 style="font-size:18px;text-align:center;">Interview Performance Analysis</h4>
+        
+        <div class="sim-score-circle-wrap">
+          <svg class="sim-score-svg">
+            <circle class="sim-score-circle-bg" cx="50" cy="50" r="45"></circle>
+            <circle class="sim-score-circle-fill" id="sim-feedback-score-circle" cx="50" cy="50" r="45"></circle>
+          </svg>
+          <div class="sim-score-txt" id="sim-feedback-score-value">0</div>
+        </div>
+
+        <div class="feedback-stats-grid">
+          <div class="feedback-stat-card">
+            <span>Clarity</span>
+            <span id="sim-feedback-clarity">0%</span>
+          </div>
+          <div class="feedback-stat-card">
+            <span>Tech Depth</span>
+            <span id="sim-feedback-depth">0%</span>
+          </div>
+          <div class="feedback-stat-card">
+            <span>STAR Method</span>
+            <span id="sim-feedback-star"><i class="ti ti-circle-x" style="color:red"></i></span>
+          </div>
+          <div class="feedback-stat-card">
+            <span>Keywords Match</span>
+            <span id="sim-feedback-keywords">0%</span>
+          </div>
+        </div>
+
+        <ul class="feedback-bullets" id="sim-feedback-bullets">
+          <!-- feedback items populated dynamically -->
+        </ul>
+
+        <div class="sim-action-row" style="margin-top:16px;">
+          <button class="sim-btn sim-btn-secondary" id="btn-sim-restart" style="flex:1;justify-content:center;">Try Another Question</button>
+          <button class="sim-btn sim-btn-primary" id="btn-sim-save" style="flex:1;justify-content:center;">Save Session Details</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROW DETAILED FEEDBACK VIEW MODAL -->
+  <div class="modal-overlay" id="row-detail-modal">
+    <div class="modal-card row-detail-modal">
+      <button class="close-modal-btn" id="btn-close-row-detail"><i class="ti ti-x"></i></button>
+      <div class="rd-header" id="rd-title">System design — Backend</div>
+      <span class="badge bg" id="rd-badge" style="margin-bottom:12px;">Excellent Performance</span>
+      
+      <div class="rd-metrics">
+        <div class="rd-metric-row">
+          <div class="rd-metric-lbl"><span>Overall Grade Score</span><span id="rd-score-num">84%</span></div>
+          <div class="rd-bar"><div class="rd-fill" id="rd-score-bar" style="width:84%"></div></div>
+        </div>
+        <div class="rd-metric-row">
+          <div class="rd-metric-lbl"><span>Communication Clarity</span><span id="rd-clarity-num">88%</span></div>
+          <div class="rd-bar"><div class="rd-fill" id="rd-clarity-bar" style="width:88%"></div></div>
+        </div>
+        <div class="rd-metric-row">
+          <div class="rd-metric-lbl"><span>Technical Context Depth</span><span id="rd-depth-num">80%</span></div>
+          <div class="rd-bar"><div class="rd-fill" id="rd-depth-bar" style="width:80%"></div></div>
+        </div>
+      </div>
+
+      <div class="rd-analysis" id="rd-analysis-text">
+        Loading analysis breakdown...
+      </div>
+    </div>
+  </div>
+
+  <!-- CORE SCRIPT LOGIC -->
+  <script>
+  (function(){
+    // ── STATE VARIABLES ──
+    var isDarkTheme = true;
+    var isLoggedIn = false;
+    var userProfile = { name: '', email: '', plan: 'Free' };
+    var activeDashboardTab = 'dashboard';
+    
+    var selectedAvatarColor = 'purple';
+    var avatarGradients = {
+      purple: 'linear-gradient(135deg, #6366f1, #a855f7)',
+      blue: 'linear-gradient(135deg, #3b82f6, #06b6d4)',
+      emerald: 'linear-gradient(135deg, #10b981, #3b82f6)',
+      amber: 'linear-gradient(135deg, #f59e0b, #e11d48)',
+      rose: 'linear-gradient(135deg, #ec4899, #f43f5e)',
+      indigo: 'linear-gradient(135deg, #4f46e5, #06b6d4)'
+    };
+
+    // Resume parsed state mock data
+    var resumeParsedData = {
+      name: "Abhishek Sharma",
+      role: "Full Stack SDE Intern",
+      skills: ["FastAPI", "React", "Python", "Docker", "PostgreSQL", "Git"],
+      analysis: {
+        score: 88,
+        summary: "Excellent academic projects and a solid technical foundation in backend engineering. Resume structure is clear and impact-oriented.",
+        strengths: ["Strong backend stack focus", "Containers & deployment experience", "Good database schema knowledge"],
+        improvements: ["Quantify project impacts with metrics", "Add more details on testing frameworks used"]
+      }
+    };
+    var isResumeUploaded = false;
+
+    // Expose state and functions to window.authState
+    window.authState = {
+      get isLoggedIn() { return isLoggedIn; },
+      set isLoggedIn(val) { isLoggedIn = val; },
+      get userProfile() { return userProfile; },
+      set userProfile(val) { Object.assign(userProfile, val); },
+      performLogin: function(name, email) { performLogin(name, email); },
+      performLogout: function() { performLogout(); }
+    };
+
+    // Toast manager
+    var toastTimeout;
+    function showToast(msg, type = 'info') {
+      var t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = 'in toast-' + type;
+      t.style.opacity = '1';
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(function(){
+        t.className = 'out toast-' + type;
+        setTimeout(function(){
+          t.style.opacity = '0';
+          t.className = '';
+        }, 200);
+      }, 2500);
+    }
+    window.showToast = showToast;
+
+    // Modal helpers
+    function openModal(id) {
+      var modal = document.getElementById(id);
+      modal.style.display = 'flex';
+      // Force repaint
+      modal.offsetHeight;
+      modal.classList.add('open');
+    }
+
+    function closeModal(id) {
+      var modal = document.getElementById(id);
+      modal.classList.remove('open');
+      setTimeout(function(){
+        modal.style.display = 'none';
+      }, 300);
+    }
+
+    // Smooth scroll router helper
+    function scrollToSection(id) {
+      var el = document.getElementById(id);
+      if(el) {
+        var navHeight = document.getElementById('nav').offsetHeight;
+        var elementPosition = el.getBoundingClientRect().top + window.scrollY;
+        var offsetPosition = elementPosition - navHeight - 10;
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
+    }
+
+    // Set Theme
+    function setTheme(dark) {
+      isDarkTheme = dark;
+      var body = document.body;
+      var icon = document.querySelector('#nav-theme-toggle i');
+      if (dark) {
+        body.classList.remove('light-theme');
+        icon.className = 'ti ti-moon';
+        showToast('Midnight dark theme activated', 'info');
+        if (typeof window.updateAuroraProps === 'function') {
+          // Dark: blue + violet/magenta — matches accent-gradient
+          window.updateAuroraProps({ color1: '#a855f7', color2: '#ec4899', brightness: 1.4, bandSpread: 1.8, speed: 0.32 });
+        }
+      } else {
+        body.classList.add('light-theme');
+        icon.className = 'ti ti-sun';
+        showToast('Nordic light theme activated', 'info');
+        if (typeof window.updateAuroraProps === 'function') {
+          // Light: softer indigo + pink — matches light accent-gradient, dimmer so it doesnt wash out text
+          window.updateAuroraProps({ color1: '#c026d3', color2: '#f472b6', brightness: 3.5, bandSpread: 1.8, speed: 0.28 });
+        }
+      }
+    }
+
+    // Bind theme switcher
+    document.getElementById('nav-theme-toggle').addEventListener('click', function(){
+      setTheme(!isDarkTheme);
+    });
+
+    // ── NAV EVENTS ──
+    document.getElementById('logo-home').addEventListener('click', function(){
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    document.getElementById('nl-feat').addEventListener('click', function(){ scrollToSection('features-sec'); });
+    document.getElementById('nl-how').addEventListener('click', function(){ scrollToSection('how-sec'); });
+    document.getElementById('nl-rev').addEventListener('click', function(){ scrollToSection('reviews-sec'); });
+    document.getElementById('nl-price').addEventListener('click', function(){ openModal('pricing-modal'); });
+    
+    // Auth Modal Triggers
+    document.getElementById('btn-login').addEventListener('click', function(){
+      setupAuthTab('login');
+      openModal('auth-modal');
+    });
+    document.getElementById('btn-nav-signup').addEventListener('click', function(){
+      setupAuthTab('signup');
+      openModal('auth-modal');
+    });
+    document.getElementById('btn-close-auth').addEventListener('click', function(){ closeModal('auth-modal'); });
+
+    // Close on background overlay click
+    document.querySelectorAll('.modal-overlay').forEach(function(modal){
+      modal.addEventListener('click', function(e){
+        if (e.target === modal) {
+          closeModal(modal.id);
+        }
+      });
+    });
+
+    // ── AUTH TAB ROUTING ──
+    function setupAuthTab(type) {
+      var tabL = document.getElementById('tab-login-btn');
+      var tabS = document.getElementById('tab-signup-btn');
+      var formL = document.getElementById('form-login');
+      var formS = document.getElementById('form-signup');
+      
+      // Reset errors
+      document.querySelectorAll('.form-error-msg').forEach(function(e){ e.style.display = 'none'; });
+
+      if (type === 'login') {
+        tabL.classList.add('active');
+        tabS.classList.remove('active');
+        formL.classList.add('active');
+        formS.classList.remove('active');
+      } else {
+        tabL.classList.remove('active');
+        tabS.classList.add('active');
+        formL.classList.remove('active');
+        formS.classList.add('active');
+      }
+    }
+
+    document.getElementById('tab-login-btn').addEventListener('click', function(){ setupAuthTab('login'); });
+    document.getElementById('tab-signup-btn').addEventListener('click', function(){ setupAuthTab('signup'); });
+
+    // Real-time initials update for avatar selector options
+    document.getElementById('signup-name').addEventListener('input', function(){
+      var nameVal = this.value.trim();
+      var initials = 'JD';
+      if(nameVal) {
+        initials = nameVal.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+      }
+      document.querySelectorAll('.avatar-option').forEach(function(opt){
+        opt.textContent = initials;
+      });
+      
+      // Validation status icon
+      var icon = document.getElementById('val-icon-signup-name');
+      if (nameVal.length === 0) {
+        icon.className = 'validation-status-icon';
+        icon.style.display = 'none';
+      } else {
+        icon.style.display = 'block';
+        if (nameVal.length >= 2) {
+          icon.className = 'validation-status-icon valid ti ti-circle-check';
+        } else {
+          icon.className = 'validation-status-icon invalid ti ti-circle-x';
+        }
+      }
+    });
+
+    // Real-time email validation
+    document.getElementById('signup-email').addEventListener('input', function(){
+      var emailVal = this.value.trim();
+      var icon = document.getElementById('val-icon-signup-email');
+      if (emailVal.length === 0) {
+        icon.className = 'validation-status-icon';
+        icon.style.display = 'none';
+      } else {
+        icon.style.display = 'block';
+        if (emailVal.includes('@') && emailVal.includes('.') && emailVal.length > 5) {
+          icon.className = 'validation-status-icon valid ti ti-circle-check';
+        } else {
+          icon.className = 'validation-status-icon invalid ti ti-circle-x';
+        }
+      }
+    });
+
+    // Password strength check with checklist indicators
+    document.getElementById('signup-password').addEventListener('input', function(){
+      var strengthBar = document.getElementById('pw-bar');
+      var strengthMeter = document.getElementById('pw-meter');
+      var strengthText = document.getElementById('pw-text');
+      var label = document.getElementById('pw-label');
+      var val = this.value;
+      
+      var chkLength = document.getElementById('chk-length');
+      var chkNumber = document.getElementById('chk-number');
+      
+      var isLengthValid = val.length >= 6;
+      var isNumberValid = /\d/.test(val);
+      
+      if (isLengthValid) {
+        chkLength.classList.add('valid');
+        chkLength.querySelector('i').className = 'ti ti-circle-check';
+      } else {
+        chkLength.classList.remove('valid');
+        chkLength.querySelector('i').className = 'ti ti-circle-x';
+      }
+      
+      if (isNumberValid) {
+        chkNumber.classList.add('valid');
+        chkNumber.querySelector('i').className = 'ti ti-circle-check';
+      } else {
+        chkNumber.classList.remove('valid');
+        chkNumber.querySelector('i').className = 'ti ti-circle-x';
+      }
+      
+      if (val.length === 0) {
+        strengthMeter.style.display = 'none';
+        strengthText.style.display = 'none';
+        return;
+      }
+      
+      strengthMeter.style.display = 'block';
+      strengthText.style.display = 'block';
+      
+      var score = 0;
+      if (isLengthValid) score++;
+      if (isNumberValid) score++;
+      if (val.length >= 10) score++;
+      
+      if (score <= 1) {
+        strengthBar.style.width = '33%';
+        strengthBar.style.backgroundColor = '#ef4444'; // Red
+        label.textContent = 'Weak';
+        label.style.color = '#ef4444';
+      } else if (score === 2) {
+        strengthBar.style.width = '66%';
+        strengthBar.style.backgroundColor = '#fbbf24'; // Amber
+        label.textContent = 'Fair';
+        label.style.color = '#fbbf24';
+      } else {
+        strengthBar.style.width = '100%';
+        strengthBar.style.backgroundColor = '#10b981'; // Green
+        label.textContent = 'Strong';
+        label.style.color = '#10b981';
+      }
+    });
+
+    // Avatar Selection bindings
+    document.querySelectorAll('.avatar-option').forEach(function(opt){
+      opt.addEventListener('click', function(){
+        document.querySelectorAll('.avatar-option').forEach(o => o.classList.remove('active'));
+        this.classList.add('active');
+        selectedAvatarColor = this.getAttribute('data-color');
+      });
+    });
+
+    // Confetti particles function
+    function triggerCelebration() {
+      var overlay = document.getElementById('signup-celebration');
+      overlay.style.display = 'block';
+      overlay.innerHTML = '';
+      var colors = ['#6366f1', '#a855f7', '#10b981', '#fbbf24', '#ec4899', '#3b82f6'];
+      
+      for(var i = 0; i < 50; i++) {
+        var particle = document.createElement('div');
+        particle.className = 'confetti-particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.top = -10 - Math.random() * 30 + 'px';
+        particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        particle.style.width = (4 + Math.random() * 8) + 'px';
+        particle.style.height = particle.style.width;
+        particle.style.animationDelay = Math.random() * 0.5 + 's';
+        particle.style.transform = `translateX(${(-20 + Math.random() * 40)}px)`;
+        overlay.appendChild(particle);
+      }
+      
+      setTimeout(function(){
+        overlay.style.display = 'none';
+      }, 2500);
+    }
+
+    // Handle Login Submit
+    document.getElementById('btn-submit-login').addEventListener('click', function(e){
+      e.preventDefault();
+      var emailVal = document.getElementById('login-email').value;
+      var passVal = document.getElementById('login-password').value;
+      
+      var emailErr = document.getElementById('err-login-email');
+      var passErr = document.getElementById('err-login-password');
+      var isValid = true;
+
+      if (!emailVal || !emailVal.includes('@')) {
+        emailErr.style.display = 'flex';
+        isValid = false;
+      } else { emailErr.style.display = 'none'; }
+
+      if (passVal.length < 6) {
+        passErr.style.display = 'flex';
+        isValid = false;
+      } else { passErr.style.display = 'none'; }
+
+      if (isValid) {
+        var self = this;
+        self.innerHTML = '<i class="ti ti-loader animate-spin" style="animation: spin 1s linear infinite"></i> Logging in...';
+        (async () => {
+          try {
+              const data = await authService.login(emailVal, passVal);
+              self.innerHTML = 'Log In <i class="ti ti-arrow-right"></i>';
+              
+              if (data.success) {
+                  performLogin(data.user.name, data.user.email);
+                  closeModal("auth-modal");
+                  showToast("Login Successful", "success");
+              } else {
+                  showToast(data.message || "Login failed", "error");
+              }
+          } catch (err) {
+              console.error(err);
+              self.innerHTML = 'Log In <i class="ti ti-arrow-right"></i>';
+              showToast(err.message || "Cannot connect to backend", "error");
+          }
+        })();
+      }
+    });
+
+    // Handle Signup Submit
+    document.getElementById('btn-submit-signup').addEventListener('click', function(e){
+      e.preventDefault();
+      var nameVal = document.getElementById('signup-name').value;
+      var emailVal = document.getElementById('signup-email').value;
+      var passVal = document.getElementById('signup-password').value;
+
+      var nameErr = document.getElementById('err-signup-name');
+      var emailErr = document.getElementById('err-signup-email');
+      var passErr = document.getElementById('err-signup-password');
+      
+      var isLengthValid = passVal.length >= 6;
+      var isNumberValid = /\d/.test(passVal);
+      var isValid = true;
+
+      if (!nameVal) {
+        nameErr.style.display = 'flex';
+        isValid = false;
+      } else { nameErr.style.display = 'none'; }
+
+      if (!emailVal || !emailVal.includes('@')) {
+        emailErr.style.display = 'flex';
+        isValid = false;
+      } else { emailErr.style.display = 'none'; }
+
+      if (!isLengthValid || !isNumberValid) {
+        passErr.style.display = 'flex';
+        isValid = false;
+      } else { passErr.style.display = 'none'; }
+
+      if (isValid) {
+        var self = this;
+        self.innerHTML = '<i class="ti ti-loader animate-spin" style="animation: spin 1s linear infinite"></i> Registering...';
+        
+        triggerCelebration();
+        
+        (async () => {
+          try {
+              const data = await authService.register(nameVal, emailVal, passVal);
+              self.innerHTML = 'Create Free Account <i class="ti ti-user-plus"></i>';
+              
+              if (data.success) {
+                  showToast("Registration Successful", "success");
+                  setupAuthTab("login");
+              } else {
+                  showToast(data.message || "Registration failed", "error");
+              }
+          } catch(err) {
+              console.error(err);
+              self.innerHTML = 'Create Free Account <i class="ti ti-user-plus"></i>';
+              showToast(err.message || "Cannot connect to backend", "error");
+          }
+        })();
+      }
+    });
+
+    // Google / Github Auth integration
+    document.getElementById('btn-google-auth').addEventListener('click', function(){
+      showToast('Redirecting to Google Sign-In...', 'info');
+      const frontendUrl = window.location.origin + window.location.pathname;
+      window.location.href = `http://127.0.0.1:5000/api/oauth/google/login?frontend_url=${encodeURIComponent(frontendUrl)}`;
+    });
+
+    document.getElementById('btn-github-auth').addEventListener('click', function(){
+      showToast('Redirecting to GitHub Sign-In...', 'info');
+      const frontendUrl = window.location.origin + window.location.pathname;
+      window.location.href = `http://127.0.0.1:5000/api/oauth/github/login?frontend_url=${encodeURIComponent(frontendUrl)}`;
+    });
+
+    function performLogin(name, email) {
+      isLoggedIn = true;
+      userProfile.name = name;
+      userProfile.email = email;
+      
+      // Update UI Header
+      document.getElementById('nav-auth-buttons').style.display = 'none';
+      
+      var profileMenu = document.getElementById('nav-profile-menu');
+      profileMenu.style.display = 'block';
+      
+      var avatarBtn = document.getElementById('avatar-btn-initials');
+      var initials = name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+      avatarBtn.textContent = initials || 'ME';
+      
+      // Set chosen avatar gradient
+      avatarBtn.style.background = avatarGradients[selectedAvatarColor] || 'var(--accent-gradient)';
+
+      document.getElementById('dropdown-username').textContent = name;
+      document.getElementById('dropdown-useremail').textContent = email;
+
+      showToast('Welcome back, ' + name + '!', 'success');
+      
+      // Fetch user's uploaded resume details
+      fetchUserResume();
+
+      // If setting tab is rendered, sync details
+      renderCurrentTab();
+    }
+
+    // Nav Avatar Menu Toggle
+    document.getElementById('avatar-btn-initials').addEventListener('click', function(e){
+      e.stopPropagation();
+      var dropdown = document.getElementById('profile-dropdown-menu');
+      dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
+    });
+
+    document.addEventListener('click', function(){
+      document.getElementById('profile-dropdown-menu').style.display = 'none';
+    });
+
+    document.getElementById('drop-dashboard').addEventListener('click', function(){
+      switchToDashboardTab('dashboard');
+    });
+
+    document.getElementById('drop-settings').addEventListener('click', function(){
+      switchToDashboardTab('settings');
+    });
+
+    function performLogout() {
+      localStorage.removeItem("token");
+      isLoggedIn = false;
+      userProfile.name = '';
+      userProfile.email = '';
+      userProfile.plan = 'Free';
+      isResumeUploaded = false;
+      resumeParsedData = { name: '', role: '', skills: [] };
+      
+      document.getElementById('nav-auth-buttons').style.display = 'flex';
+      document.getElementById('nav-profile-menu').style.display = 'none';
+      
+      showToast('Logged out successfully', 'info');
+      switchToDashboardTab('dashboard');
+    }
+
+    document.getElementById('drop-logout').addEventListener('click', function () {
+      performLogout();
+    });
+
+    // ── HERO BUTTON ACTIONS ──
+    document.getElementById('btn-hero-start').addEventListener('click', function(){
+      if (isLoggedIn) {
+        openSimulator();
+      } else {
+        setupAuthTab('signup');
+        openModal('auth-modal');
+        showToast('Create your free account to get started', 'info');
+      }
+    });
+
+    document.getElementById('btn-hero-watch').addEventListener('click', function(){
+      scrollToSection('how-sec');
+    });
+
+    document.getElementById('btn-cta-start').addEventListener('click', function(){
+      if (isLoggedIn) {
+        openSimulator();
+      } else {
+        setupAuthTab('signup');
+        openModal('auth-modal');
+      }
+    });
+
+    document.getElementById('btn-cta-gh').addEventListener('click', function(){
+      showToast('Opening GitHub Repository (InterviewAI Mockup)...', 'info');
+      window.open('https://github.com', '_blank');
+    });
+
+    // Footer actions
+    document.getElementById('ft-privacy').addEventListener('click', function(){ showToast('Privacy Policy details - Secured with AES-256', 'info'); });
+    document.getElementById('ft-terms').addEventListener('click', function(){ showToast('Terms of Service agreement rules', 'info'); });
+    document.getElementById('ft-github').addEventListener('click', function(){ window.open('https://github.com', '_blank'); });
+    document.getElementById('ft-contact').addEventListener('click', function(){ showToast('Contact support: contact@interviewai.app', 'success'); });
+
+    // ── PRICING SELECTION LOGIC ──
+    var billingCycle = 'monthly';
+    var selectedPlanInModal = 'Pro';
+
+    document.getElementById('btn-close-pricing').addEventListener('click', function(){ closeModal('pricing-modal'); });
+    
+    document.getElementById('btn-bill-monthly').addEventListener('click', function(){
+      billingCycle = 'monthly';
+      this.classList.add('active');
+      document.getElementById('btn-bill-yearly').classList.remove('active');
+      document.getElementById('pricing-pro-amount').textContent = '$19';
+      document.getElementById('pricing-pro-period').textContent = '/ month';
+    });
+
+    document.getElementById('btn-bill-yearly').addEventListener('click', function(){
+      billingCycle = 'yearly';
+      this.classList.add('active');
+      document.getElementById('btn-bill-monthly').classList.remove('active');
+      document.getElementById('pricing-pro-amount').textContent = '$12';
+      document.getElementById('pricing-pro-period').textContent = '/ mo (billed annually)';
+    });
+
+    // Selecting plan rows
+    document.querySelectorAll('.pricing-card').forEach(function(card){
+      card.addEventListener('click', function(){
+        document.querySelectorAll('.pricing-card').forEach(c => c.classList.remove('recommended'));
+        this.classList.add('recommended');
+        selectedPlanInModal = this.getAttribute('data-plan');
+        
+        var btn = document.getElementById('btn-select-pricing-plan');
+        if (selectedPlanInModal === 'Free') {
+          btn.textContent = 'Continue with Free Starter';
+        } else if (selectedPlanInModal === 'Pro') {
+          btn.textContent = 'Upgrade to Pro Now';
+        } else {
+          btn.textContent = 'Contact College Placement Cell';
+        }
+      });
+    });
+
+    document.getElementById('btn-select-pricing-plan').addEventListener('click', function(){
+      var self = this;
+      var originalText = self.textContent;
+      self.innerHTML = '<i class="ti ti-loader animate-spin" style="animation: spin 1s linear infinite"></i> Processing upgrade...';
+      
+      setTimeout(function(){
+        self.textContent = originalText;
+        userProfile.plan = selectedPlanInModal;
+        showToast('Successfully upgraded to ' + selectedPlanInModal + ' Plan!', 'success');
+        closeModal('pricing-modal');
+        renderCurrentTab(); // Sync Settings
+      }, 1500);
+    });
+
+
+    // ── DASHBOARD CORE DATA MOCK ──
+    var mockSessions = [
+      { id: 1, type: 'system', name: 'System design — Backend', score: 84, communication: 88, depth: 80, badge: 'Excellent', bcolor: 'bg', analysis: 'Demonstrated solid understanding of vertical vs horizontal scaling. Good usage of caching hierarchies. Suggestion: elaborate more on network replication failure cases.' },
+      { id: 2, type: 'dsa', name: 'DSA — Arrays and linked lists', score: 76, communication: 70, depth: 82, badge: 'Proficient', bcolor: 'bb', analysis: 'Excellent algorithmic solution implementation with O(N) complexity. Ramble somewhat during explanation. Suggestion: Practice talking through time-complexity constraints before coding.' },
+      { id: 3, type: 'behavioral', name: 'Behavioural — STAR method', score: 91, communication: 95, depth: 88, badge: 'Master', bcolor: 'bg', analysis: 'Perfect usage of the STAR framework structure. Concrete metrics given during Result description. Suggestion: Maintain this standard!' }
+    ];
+
+    function getAvgScore() {
+      if(mockSessions.length === 0) return 0;
+      var sum = mockSessions.reduce((acc, curr) => acc + curr.score, 0);
+      return Math.round(sum / mockSessions.length);
+    }
+
+    // Helper to switch tab
+    function switchToDashboardTab(tabKey) {
+      document.querySelectorAll('.mitem').forEach(function(btn){
+        if (btn.getAttribute('data-tab') === tabKey) {
+          btn.classList.add('on');
+        } else {
+          btn.classList.remove('on');
+        }
+      });
+      activeDashboardTab = tabKey;
+      renderCurrentTab();
+    }
+
+    // Connect sidebar buttons
+    document.querySelectorAll('.mitem').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        if (!isLoggedIn) {
+          setupAuthTab('login');
+          openModal('auth-modal');
+          showToast('Please log in to access the dashboard features', 'info');
+          return;
+        }
+        var tabKey = this.getAttribute('data-tab');
+        switchToDashboardTab(tabKey);
+      });
+    });
+
+    // Render tabs inside mockup dashboard
+    function renderCurrentTab() {
+      var container = document.getElementById('dashboard-content-box');
+      container.innerHTML = ''; // Clear
+
+      var wrapper = document.createElement('div');
+      wrapper.className = 'dashboard-view-content';
+
+      // Access Protection for Mockup Dashboard
+      if (!isLoggedIn) {
+        wrapper.innerHTML = `
+          <div class="locked-dashboard-state" style="display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding: 50px 20px; height: 100%; min-height: 300px; animation: fadeIn 0.3s ease both;">
+            <div style="font-size: 54px; margin-bottom: 20px; color: var(--accent);"><i class="ti ti-lock"></i></div>
+            <h3 style="margin-bottom: 12px; color: var(--text-primary); font-family: 'Outfit', sans-serif; font-size: 20px; font-weight: 600;">Dashboard Protected</h3>
+            <p style="font-size: 14px; color: var(--text-secondary); max-width: 340px; margin-bottom: 28px; line-height: 1.5;">
+              Create an account or sign in to start mock interviews, track scores, upload resumes, and analyze your performance.
+            </p>
+            <button class="btn btn-primary" id="btn-dashboard-lock-login" style="padding: 12px 28px; font-weight: 500; font-family: 'Outfit', sans-serif; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; border-radius: 9999px; background: var(--accent-gradient); border: none; color: white; cursor: pointer; transition: transform 0.2s ease;">
+              Log In / Sign Up <i class="ti ti-arrow-right"></i>
+            </button>
+          </div>
+        `;
+        container.appendChild(wrapper);
+
+        var lockBtn = document.getElementById('btn-dashboard-lock-login');
+        if (lockBtn) {
+          lockBtn.addEventListener('click', function() {
+            setupAuthTab('login');
+            openModal('auth-modal');
+          });
+        }
+        return;
+      }
+
+      if (activeDashboardTab === 'dashboard') {
+        // --- 1. DASHBOARD VIEW ---
+        wrapper.innerHTML = `
+          <div class="mhead">
+            <span>Your dashboard</span>
+            <span class="badge bg">${mockSessions.length} sessions completed</span>
+          </div>
+          <div class="mstats">
+            <div class="mstat"><div class="mstat-n">${getAvgScore()}</div><div class="mstat-l">Avg score</div></div>
+            <div class="mstat"><div class="mstat-n">${mockSessions.length}</div><div class="mstat-l">Sessions</div></div>
+            <div class="mstat"><div class="mstat-n">${mockSessions.length > 0 ? '91%' : '0%'}</div><div class="mstat-l">Improvement</div></div>
+          </div>
+          <div class="mrows" id="dashboard-rows-box">
+            <!-- Rows injected -->
+          </div>
+        `;
+        container.appendChild(wrapper);
+
+        // Populate rows
+        var rowsBox = document.getElementById('dashboard-rows-box');
+        mockSessions.forEach(function(sess, index){
+          var row = document.createElement('div');
+          row.className = 'mrow';
+          row.style.animation = 'slideR 0.3s ease both';
+          row.style.animationDelay = (index * 0.05) + 's';
+          row.innerHTML = `
+            <span class="mrow-name">${sess.name}</span>
+            <div class="mrow-right">
+              <div class="sbar"><div class="sfill" id="row-fill-${sess.id}"></div></div>
+              <span class="badge ${sess.bcolor}">${sess.score}</span>
+            </div>
+          `;
+          
+          row.addEventListener('click', function(){
+            openRowDetails(sess.id);
+          });
+
+          rowsBox.appendChild(row);
+          
+          // Animate the progression bar fill
+          setTimeout(function(){
+            var fill = document.getElementById('row-fill-' + sess.id);
+            if(fill) fill.style.width = sess.score + '%';
+          }, 50);
+        });
+
+      } else if (activeDashboardTab === 'interviews') {
+        // --- 2. INTERVIEWS VIEW ---
+        wrapper.innerHTML = `
+          <div class="mhead">
+            <span>Mock interview rooms</span>
+            <span class="badge bb">Free active</span>
+          </div>
+          <p style="font-size:12px;color:var(--text-secondary);margin-top:-10px;">Select a structured template to start a dynamic mock session scored by Gemini.</p>
+          <div class="interviews-grid">
+            <div class="interview-card">
+              <div class="icard-details">
+                <h5>SDE Backend engineer</h5>
+                <p>System Architecture, DB Design, Caching strategies, API scaling guidelines.</p>
+              </div>
+              <div class="icard-action">
+                <span class="badge bg" style="font-size:10px;">Medium</span>
+                <button class="start-int-btn" data-role="backend">Launch <i class="ti ti-player-play"></i></button>
+              </div>
+            </div>
+
+            <div class="interview-card">
+              <div class="icard-details">
+                <h5>Data structures & Alg</h5>
+                <p>Array traversal, Pointer offsets, Tree Node trees, String manipulations.</p>
+              </div>
+              <div class="icard-action">
+                <span class="badge by" style="font-size:10px;">Hard</span>
+                <button class="start-int-btn" data-role="dsa">Launch <i class="ti ti-player-play"></i></button>
+              </div>
+            </div>
+
+            <div class="interview-card">
+              <div class="icard-details">
+                <h5>HR Behavioral questions</h5>
+                <p>STAR alignment check, conflict resolution, project breakdowns, teamwork.</p>
+              </div>
+              <div class="icard-action">
+                <span class="badge bg" style="font-size:10px;">Easy</span>
+                <button class="start-int-btn" data-role="behavioral">Launch <i class="ti ti-player-play"></i></button>
+              </div>
+            </div>
+
+            <div class="interview-card">
+              <div class="icard-details">
+                <h5>System design scaling</h5>
+                <p>Design Netflix, Load balancer queues, Replication partitions, Database sharding.</p>
+              </div>
+              <div class="icard-action">
+                <span class="badge by" style="font-size:10px;">Hard</span>
+                <button class="start-int-btn" data-role="system">Launch <i class="ti ti-player-play"></i></button>
+              </div>
+            </div>
+          </div>
+        `;
+        container.appendChild(wrapper);
+
+        // Bind buttons
+        container.querySelectorAll('.start-int-btn').forEach(function(btn){
+          btn.addEventListener('click', function(){
+            var role = this.getAttribute('data-role');
+            openSimulator(role);
+          });
+        });
+
+      } else if (activeDashboardTab === 'resume') {
+        // --- 3. RESUME VIEW ---
+        var listItemsHTML = '';
+        if (isResumeUploaded) {
+          listItemsHTML = resumeParsedData.skills.map(function(s){
+            return `<div class="skill-chip">${s} <i class="ti ti-x" data-skill="${s}"></i></div>`;
+          }).join('');
+        }
+
+        wrapper.innerHTML = `
+          <div class="mhead">
+            <span>Resume parser details</span>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              ${isResumeUploaded ? '<button class="ghost" id="btn-delete-resume" style="padding: 4px 10px; border-radius: 6px; font-size: 11px; display: inline-flex; align-items: center; gap: 4px; border: 1px solid rgba(239, 68, 68, 0.2); color: #ef4444; background: rgba(239, 68, 68, 0.05); cursor: pointer;"><i class="ti ti-trash"></i> Delete CV</button>' : ''}
+              <span class="badge ${isResumeUploaded ? 'bg' : 'by'}">${isResumeUploaded ? 'Parsed successfully' : 'No CV Uploaded'}</span>
+            </div>
+          </div>
+          <div class="resume-container">
+            <div class="drag-drop-zone" id="cv-drag-zone" style="display: ${isResumeUploaded ? 'none' : 'flex'};">
+              <i class="ti ti-cloud-upload"></i>
+              <p>Drag and drop your resume (PDF) here, or click to upload</p>
+              <small>CV analysis automatically structures mock interview categories</small>
+              <input type="file" id="cv-file-input" accept=".pdf" style="display: none;">
+            </div>
+            
+            <div class="parsing-progress" id="cv-progress-wrap">
+              <div class="parsing-text" id="cv-progress-text">Readying scanner...</div>
+              <div class="parsing-progress-bar">
+                <div class="parsing-progress-fill" id="cv-progress-fill"></div>
+              </div>
+            </div>
+
+            <div class="parsed-resume-layout" id="cv-data-card" style="display: ${isResumeUploaded ? 'grid' : 'none'}; grid-template-columns: 1fr 1fr; gap: 16px; animation: tabFadeIn 0.3s ease;">
+              <!-- Profile details card -->
+              <div class="parsed-resume-card" style="background: var(--bg-surface-0); border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 12px;">
+                <h4 style="font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 700; color: var(--text-accent); margin-bottom: 4px; display: flex; align-items: center; gap: 6px; text-transform: uppercase; letter-spacing: 0.5px;"><i class="ti ti-user"></i> Candidate Profile</h4>
+                <div class="parsed-info-item">
+                  <span>Extracted Name</span>
+                  <span id="cv-ext-name">${resumeParsedData.name}</span>
+                </div>
+                <div class="parsed-info-item">
+                  <span>Identified Role Target</span>
+                  <span id="cv-ext-role">${resumeParsedData.role}</span>
+                </div>
+                <div class="parsed-skills-wrap">
+                  <div class="skills-header">Extracted Skills Keyword Chips</div>
+                  <div class="skills-chips" id="cv-skills-chips-box">
+                    ${listItemsHTML}
+                  </div>
+                  <div class="add-skill-wrap" style="display: flex; gap: 6px; margin-top: 8px;">
+                    <input type="text" placeholder="Add custom skill" class="add-skill-input" id="input-new-skill" style="flex: 1; padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg-surface-elevated); color: var(--text-primary); font-size: 11px;">
+                    <button class="add-skill-btn" id="btn-add-skill" style="padding: 6px 12px; background: var(--accent-gradient); border: none; border-radius: 6px; color: white; font-size: 11px; font-weight: 600; cursor: pointer;">Add</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- AI Analysis card -->
+              <div class="parsed-resume-card" style="background: var(--bg-surface-0); border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 12px;">
+                <h4 style="font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 700; color: var(--text-accent); margin-bottom: 4px; display: flex; align-items: center; gap: 6px; text-transform: uppercase; letter-spacing: 0.5px;"><i class="ti ti-brain"></i> AI Resume Analysis</h4>
+                
+                <div style="display: flex; align-items: center; gap: 16px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">
+                  <div style="position: relative; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: rgba(99, 102, 241, 0.1); border-radius: 50%; border: 2px solid var(--text-accent); flex-shrink: 0;">
+                    <span id="cv-analysis-score" style="font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 800; color: var(--text-primary);">${resumeParsedData.analysis?.score || 0}</span>
+                  </div>
+                  <div>
+                    <div style="font-size: 12px; font-weight: 700; color: var(--text-primary);">Resume Evaluation Score</div>
+                    <div style="font-size: 10px; color: var(--text-muted);">Scored dynamically by Gemini 1.5</div>
+                  </div>
+                </div>
+
+                <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.5; font-style: italic;" id="cv-analysis-summary">
+                  ${resumeParsedData.analysis?.summary || 'No review summary available.'}
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                  <div class="skills-header">Key Strengths</div>
+                  <div id="cv-analysis-strengths" style="display: flex; flex-direction: column; gap: 4px;">
+                    ${(resumeParsedData.analysis?.strengths || []).map(s => `<div style="font-size: 11px; color: #10b981; display: flex; align-items: center; gap: 4px;"><i class="ti ti-circle-check"></i> <span>${s}</span></div>`).join('') || '<div style="font-size: 11px; color: var(--text-muted);">None noted.</div>'}
+                  </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                  <div class="skills-header">Actionable Improvements</div>
+                  <div id="cv-analysis-improvements" style="display: flex; flex-direction: column; gap: 4px;">
+                    ${(resumeParsedData.analysis?.improvements || []).map(imp => `<div style="font-size: 11px; color: #f59e0b; display: flex; align-items: center; gap: 4px;"><i class="ti ti-arrow-right"></i> <span>${imp}</span></div>`).join('') || '<div style="font-size: 11px; color: var(--text-muted);">None noted.</div>'}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+        container.appendChild(wrapper);
+
+        // Bind drag-and-drop events
+        var zone = document.getElementById('cv-drag-zone');
+        var fileInput = document.getElementById('cv-file-input');
+
+        if (zone && fileInput) {
+          zone.addEventListener('dragover', function(e){
+            e.preventDefault();
+            this.classList.add('dragover');
+          });
+          zone.addEventListener('dragleave', function(){
+            this.classList.remove('dragover');
+          });
+          zone.addEventListener('drop', function(e){
+            e.preventDefault();
+            this.classList.remove('dragover');
+            if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+              handleResumeFile(e.dataTransfer.files[0]);
+            }
+          });
+          zone.addEventListener('click', function(){
+            fileInput.click();
+          });
+          fileInput.addEventListener('change', function(){
+            if (this.files && this.files.length > 0) {
+              handleResumeFile(this.files[0]);
+            }
+          });
+        }
+
+        // Delete resume button bind
+        var deleteBtn = document.getElementById('btn-delete-resume');
+        if (deleteBtn) {
+          deleteBtn.addEventListener('click', async function(){
+            if (confirm('Are you sure you want to delete your uploaded resume? This will clear your profile skills scope.')) {
+              try {
+                const response = await apiRequest('/resume/current', {
+                  method: 'DELETE'
+                });
+                if (response.success) {
+                  isResumeUploaded = false;
+                  resumeParsedData = { name: '', role: '', skills: [] };
+                  showToast('Resume deleted successfully', 'info');
+                  renderCurrentTab();
+                }
+              } catch (err) {
+                showToast(err.message || 'Failed to delete resume', 'error');
+              }
+            }
+          });
+        }
+
+        // Add skill bind
+        var addBtn = document.getElementById('btn-add-skill');
+        if (addBtn) {
+          addBtn.addEventListener('click', addSkillFromInput);
+          document.getElementById('input-new-skill').addEventListener('keypress', function(e){
+            if (e.key === 'Enter') addSkillFromInput();
+          });
+        }
+
+        // Skill delete bind
+        bindSkillDeleteListeners();
+
+      } else if (activeDashboardTab === 'analytics') {
+        // --- 4. ANALYTICS VIEW ---
+        wrapper.innerHTML = `
+          <div class="mhead">
+            <span>Analytics overview</span>
+            <span class="badge bg">+18 pts progress</span>
+          </div>
+          <p style="font-size:12px;color:var(--text-secondary);margin-top:-10px;">Progression tracking of average test scores over time.</p>
+          
+          <div class="analytics-graph-box">
+            <div class="chart-tooltip" id="chart-tooltip-box">
+              Session <span class="chart-tooltip-score" id="chart-tooltip-val">0</span>
+            </div>
+            
+            <svg viewBox="0 0 450 180">
+              <!-- Y Grid Lines -->
+              <line x1="40" y1="20" x2="430" y2="20" class="svg-grid-line"></line>
+              <line x1="40" y1="70" x2="430" y2="70" class="svg-grid-line"></line>
+              <line x1="40" y1="120" x2="430" y2="120" class="svg-grid-line"></line>
+              <line x1="40" y1="160" x2="430" y2="160" class="svg-grid-line"></line>
+              
+              <!-- Y Axis labels -->
+              <text x="15" y="24" fill="var(--text-muted)" font-size="10" font-weight="700">100</text>
+              <text x="15" y="74" fill="var(--text-muted)" font-size="10" font-weight="700">70</text>
+              <text x="15" y="124" fill="var(--text-muted)" font-size="10" font-weight="700">40</text>
+              <text x="15" y="164" fill="var(--text-muted)" font-size="10" font-weight="700">0</text>
+              
+              <!-- X Axis labels -->
+              <text x="60" y="176" fill="var(--text-muted)" font-size="9" text-anchor="middle">Sess 1</text>
+              <text x="130" y="176" fill="var(--text-muted)" font-size="9" text-anchor="middle">Sess 2</text>
+              <text x="200" y="176" fill="var(--text-muted)" font-size="9" text-anchor="middle">Sess 3</text>
+              <text x="270" y="176" fill="var(--text-muted)" font-size="9" text-anchor="middle">Sess 4</text>
+              <text x="340" y="176" fill="var(--text-muted)" font-size="9" text-anchor="middle">Sess 5</text>
+              <text x="410" y="176" fill="var(--text-muted)" font-size="9" text-anchor="middle">Sess 6</text>
+
+              <!-- Connection Line -->
+              <path class="svg-line" d="M 60,130 L 130,122 L 200,98 L 270,105 L 340,65 L 410,48"></path>
+
+              <!-- Interactive Dots -->
+              <!-- Points derived: 60,130 (58), 130,122 (62), 200,98 (76), 270,105 (72), 340,65 (84), 410,48 (91) -->
+              <circle cx="60" cy="130" r="4.5" class="svg-dot" data-score="58%" data-title="Intro screening"></circle>
+              <circle cx="130" cy="122" r="4.5" class="svg-dot" data-score="62%" data-title="Frontend logic"></circle>
+              <circle cx="200" cy="98" r="4.5" class="svg-dot" data-score="76%" data-title="DSA linked lists"></circle>
+              <circle cx="270" cy="105" r="4.5" class="svg-dot" data-score="72%" data-title="System design basics"></circle>
+              <circle cx="340" cy="65" r="4.5" class="svg-dot" data-score="84%" data-title="Backend scaling"></circle>
+              <circle cx="410" cy="48" r="4.5" class="svg-dot" data-score="91%" data-title="STAR behavioral"></circle>
+            </svg>
+          </div>
+        `;
+        container.appendChild(wrapper);
+
+        // Bind interactive dots inside graph
+        var tooltip = document.getElementById('chart-tooltip-box');
+        container.querySelectorAll('.svg-dot').forEach(function(dot){
+          dot.addEventListener('mouseenter', function(){
+            var score = this.getAttribute('data-score');
+            var title = this.getAttribute('data-title');
+            tooltip.innerHTML = `${title}: <span class="chart-tooltip-score">${score}</span>`;
+            tooltip.style.display = 'block';
+            
+            // Calculate coordinates relative to parent box
+            var box = this.getBoundingClientRect();
+            var parentBox = this.closest('.analytics-graph-box').getBoundingClientRect();
+            var left = box.left - parentBox.left + (box.width / 2);
+            var top = box.top - parentBox.top;
+            
+            tooltip.style.left = left + 'px';
+            tooltip.style.top = top + 'px';
+          });
+          dot.addEventListener('mouseleave', function(){
+            tooltip.style.display = 'none';
+          });
+        });
+
+      } else if (activeDashboardTab === 'settings') {
+        // --- 5. SETTINGS VIEW ---
+        wrapper.innerHTML = `
+          <div class="mhead">
+            <span>Account settings</span>
+            <span class="badge bg">Synchronized</span>
+          </div>
+          <div class="settings-list">
+
+            <div class="setting-item">
+              <div class="setting-icon-wrap" style="background:linear-gradient(135deg,rgba(168,85,247,0.15),rgba(236,72,153,0.15));border:1px solid rgba(168,85,247,0.2);border-radius:10px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-right:14px;">
+                <i class="ti ti-crown" style="font-size:16px;color:#a855f7"></i>
+              </div>
+              <div class="setting-info" style="flex:1">
+                <h5>Pro Subscription</h5>
+                <p>Status: <b id="settings-p-mode" style="color:var(--text-accent)">${userProfile.plan === 'Pro' ? '✦ Pro Member' : 'Free tier (limited)'}</b></p>
+              </div>
+              <button class="solid" id="settings-billing-btn" style="font-size:11px;padding:6px 14px;flex-shrink:0;">Upgrade</button>
+            </div>
+
+            <div class="setting-item setting-item--theme" id="settings-theme-row">
+              <div class="setting-icon-wrap" id="settings-theme-icon" style="background:linear-gradient(135deg,rgba(30,30,60,0.12),rgba(99,102,241,0.12));border:1px solid rgba(99,102,241,0.2);border-radius:10px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-right:14px;transition:all 0.3s;">
+                <i class="ti ${isDarkTheme ? 'ti-moon-stars' : 'ti-sun'}" id="settings-theme-icon-i" style="font-size:16px;color:${isDarkTheme ? '#818cf8' : '#f59e0b'}"></i>
+              </div>
+              <div class="setting-info" style="flex:1">
+                <h5>Dark Mode</h5>
+                <p id="settings-theme-desc">${isDarkTheme ? 'Midnight dark theme — easy on the eyes.' : 'Light theme — bright and clean.'}</p>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="settings-theme-checkbox" ${isDarkTheme ? 'checked' : ''}>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-icon-wrap" style="background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.2);border-radius:10px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-right:14px;">
+                <i class="ti ti-bell" style="font-size:16px;color:#10b981"></i>
+              </div>
+              <div class="setting-info" style="flex:1">
+                <h5>Daily Reminders</h5>
+                <p>Calendar prompts to practice at 9:00 AM every day.</p>
+              </div>
+              <label class="switch">
+                <input type="checkbox" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-icon-wrap" style="background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.2);border-radius:10px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-right:14px;">
+                <i class="ti ti-mail" style="font-size:16px;color:#f59e0b"></i>
+              </div>
+              <div class="setting-info" style="flex:1">
+                <h5>Email Notifications</h5>
+                <p>Receive detailed feedback summaries after each session.</p>
+              </div>
+              <label class="switch">
+                <input type="checkbox">
+                <span class="slider"></span>
+              </label>
+            </div>
+
+          </div>
+        `;
+        container.appendChild(wrapper);
+
+        // Bind dark mode toggle — checked = dark, unchecked = light
+        document.getElementById('settings-theme-checkbox').addEventListener('change', function(){
+          var dark = this.checked;
+          setTheme(dark);
+          // Update icon + description live
+          var iconEl = document.getElementById('settings-theme-icon-i');
+          var descEl = document.getElementById('settings-theme-desc');
+          var iconWrap = document.getElementById('settings-theme-icon');
+          if (iconEl) {
+            iconEl.className = dark ? 'ti ti-moon-stars' : 'ti ti-sun';
+            iconEl.style.color = dark ? '#818cf8' : '#f59e0b';
+          }
+          if (iconWrap) {
+            iconWrap.style.background = dark
+              ? 'linear-gradient(135deg,rgba(30,30,60,0.12),rgba(99,102,241,0.12))'
+              : 'linear-gradient(135deg,rgba(254,215,70,0.12),rgba(245,158,11,0.12))';
+            iconWrap.style.borderColor = dark ? 'rgba(99,102,241,0.2)' : 'rgba(245,158,11,0.25)';
+          }
+          if (descEl) {
+            descEl.textContent = dark ? 'Midnight dark theme — easy on the eyes.' : 'Light theme — bright and clean.';
+          }
+        });
+
+        document.getElementById('settings-billing-btn').addEventListener('click', function(){
+          openModal('pricing-modal');
+        });
+      }
+    }
+
+    // Default load
+    renderCurrentTab();
+
+    // ── RESUME PARSER API ACTIONS ──
+    async function fetchUserResume() {
+      try {
+        const response = await apiRequest('/resume/current');
+        if (response.success && response.resume) {
+          isResumeUploaded = true;
+          resumeParsedData = {
+            name: response.resume.extracted_name || 'N/A',
+            role: response.resume.extracted_role || 'N/A',
+            skills: response.resume.extracted_skills || [],
+            analysis: response.resume.analysis || null
+          };
+        } else {
+          isResumeUploaded = false;
+        }
+      } catch (err) {
+        console.error('Error fetching resume:', err);
+        isResumeUploaded = false;
+      }
+      renderCurrentTab();
+    }
+
+    async function handleResumeFile(file) {
+      if (!file) return;
+      
+      const ext = file.name.split('.').pop().toLowerCase();
+      if (ext !== 'pdf') {
+        showToast('Only PDF files are supported.', 'error');
+        return;
+      }
+      
+      if (file.size > 5 * 1024 * 1024) {
+        showToast('File size exceeds 5MB limit.', 'error');
+        return;
+      }
+
+      var zone = document.getElementById('cv-drag-zone');
+      var progressWrap = document.getElementById('cv-progress-wrap');
+      var fill = document.getElementById('cv-progress-fill');
+      var text = document.getElementById('cv-progress-text');
+      var dataCard = document.getElementById('cv-data-card');
+
+      if (zone) zone.style.display = 'none';
+      if (progressWrap) progressWrap.style.display = 'flex';
+      if (dataCard) dataCard.style.display = 'none';
+
+      if (fill) fill.style.width = '15%';
+      if (text) text.textContent = 'Uploading resume PDF to Supabase Storage...';
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        const token = localStorage.getItem('token');
+        const headers = {};
+        if (token) {
+          headers['Authorization'] = `Bearer ${token}`;
+        }
+
+        // We use direct fetch because apiRequest defaults to application/json
+        const response = await fetch(`${API_BASE_URL}/resume/upload`, {
+          method: 'POST',
+          headers,
+          body: formData
+        });
+
+        if (fill) fill.style.width = '55%';
+        if (text) text.textContent = 'Running pdfplumber text extraction...';
+
+        const data = await response.json().catch(() => ({
+          success: false,
+          message: 'Invalid JSON response from server'
+        }));
+
+        if (!response.ok) {
+          throw new Error(data.message || 'Upload failed');
+        }
+
+        if (fill) fill.style.width = '85%';
+        if (text) text.textContent = 'Structuring database profile keys...';
+
+        setTimeout(() => {
+          if (fill) fill.style.width = '100%';
+          isResumeUploaded = true;
+          resumeParsedData = {
+            name: data.resume.extracted_name || 'N/A',
+            role: data.resume.extracted_role || 'N/A',
+            skills: data.resume.extracted_skills || [],
+            analysis: data.resume.analysis || null
+          };
+          showToast('Resume uploaded and parsed successfully!', 'success');
+          if (progressWrap) progressWrap.style.display = 'none';
+          renderCurrentTab();
+        }, 800);
+
+      } catch (err) {
+        console.error(err);
+        showToast(err.message || 'Failed to upload resume', 'error');
+        if (progressWrap) progressWrap.style.display = 'none';
+        if (zone) zone.style.display = 'flex';
+      }
+    }
+
+    async function syncResumeSkills(updatedSkills) {
+      try {
+        const response = await apiRequest('/resume/skills', {
+          method: 'PUT',
+          body: { skills: updatedSkills }
+        });
+        if (response.success) {
+          resumeParsedData.skills = response.resume.extracted_skills;
+          return true;
+        }
+      } catch (err) {
+        showToast(err.message || 'Failed to sync skills with server', 'error');
+      }
+      return false;
+    }
+
+    async function addSkillFromInput() {
+      var input = document.getElementById('input-new-skill');
+      var val = input.value.trim();
+      if (val) {
+        if (!resumeParsedData.skills.includes(val)) {
+          const newSkills = [...resumeParsedData.skills, val];
+          const success = await syncResumeSkills(newSkills);
+          if (success) {
+            input.value = '';
+            showToast('Added ' + val + ' to parser scope.', 'success');
+            renderCurrentTab();
+          }
+        } else {
+          showToast('Skill already present.', 'error');
+        }
+      }
+    }
+
+    function bindSkillDeleteListeners() {
+      document.querySelectorAll('.skill-chip i').forEach(function(iBtn){
+        iBtn.addEventListener('click', async function(e){
+          e.stopPropagation();
+          var skillName = this.getAttribute('data-skill');
+          const newSkills = resumeParsedData.skills.filter(s => s !== skillName);
+          const success = await syncResumeSkills(newSkills);
+          if (success) {
+            this.closest('.skill-chip').remove();
+            showToast('Removed ' + skillName, 'info');
+          }
+        });
+      });
+    }
+
+    // ── ROW DETAIL / BREAKDOWN POPUP ──
+    document.getElementById('btn-close-row-detail').addEventListener('click', function(){ closeModal('row-detail-modal'); });
+
+    function openRowDetails(sessId) {
+      var sess = mockSessions.find(s => s.id === sessId);
+      if(!sess) return;
+
+      document.getElementById('rd-title').textContent = sess.name;
+      
+      var badge = document.getElementById('rd-badge');
+      badge.textContent = sess.badge + ' performance';
+      badge.className = 'badge ' + sess.bcolor;
+
+      document.getElementById('rd-score-num').textContent = sess.score + '%';
+      document.getElementById('rd-clarity-num').textContent = sess.communication + '%';
+      document.getElementById('rd-depth-num').textContent = sess.depth + '%';
+      
+      document.getElementById('rd-analysis-text').textContent = sess.analysis;
+
+      // Open Modal
+      openModal('row-detail-modal');
+
+      // Animate rating indicators
+      setTimeout(function(){
+        document.getElementById('rd-score-bar').style.width = sess.score + '%';
+        document.getElementById('rd-clarity-bar').style.width = sess.communication + '%';
+        document.getElementById('rd-depth-bar').style.width = sess.depth + '%';
+      }, 50);
+    }
+
+    // ── INTERVIEW SIMULATOR IMPLEMENTATION ──
+    var simActiveRole = 'backend';
+    var simStep = 1; 
+    var simMicStreamActive = false;
+    var simMicAnimFrame;
+    
+    // Questions list bank
+    var questionsBank = {
+      backend: [
+        "Explain the key architectural differences between scaling a system vertically versus horizontally. When would you opt for sharding a SQL database?",
+        "How would you design an efficient cache invalidation mechanism for high-traffic products? Explain cache-aside versus write-through mechanisms.",
+        "What strategies would you use to prevent cascading failures across microservices? Describe circuit breaker patterns and fallback design."
+      ],
+      dsa: [
+        "Given an unsorted integer array, how would you find the longest consecutive elements sequence in O(n) runtime complexity?",
+        "Can you describe how to reverse a singly linked list iteratively and recursively? What are the space/time trade-offs of each?",
+        "How do you implement a min-heap structure? Detail the heapify operations and their corresponding mathematical time complexities."
+      ],
+      behavioral: [
+        "Describe a challenging situation where you disagreed with a senior engineer or supervisor. How did you resolve the conflict productively?",
+        "Give me an example of a project where you failed or missed a critical deadline. What did you learn and how did you adapt later?",
+        "Tell me about a time you had to optimize a slow application or build a complex project under tight deadlines. Use the STAR method."
+      ],
+      system: [
+        "Walk me through your database schema, cache infrastructure, and load balancer placements to scale Netflix's video streaming servers globally.",
+        "How would you design a real-time collaborative document editor like Google Docs? Address consistency, concurrency, and WebSockets.",
+        "Design a distributed rate limiter that handles 100,000 requests per second across geographical locations."
+      ]
+    };
+
+    var currentQuestionIndex = 0;
+    
+    function openSimulator(defaultRole = 'backend') {
+      if (!isLoggedIn) {
+        setupAuthTab('login');
+        openModal('auth-modal');
+        showToast('Please log in to launch a mock interview simulator', 'info');
+        return;
+      }
+      simActiveRole = defaultRole;
+      simStep = 1;
+      
+      // Update config panel selection
+      document.querySelectorAll('.sim-role-card').forEach(function(card){
+        if(card.getAttribute('data-role') === defaultRole) {
+          card.classList.add('active');
+        } else {
+          card.classList.remove('active');
+        }
+      });
+
+      // Show setup step
+      showSimulatorStep(1);
+      openModal('simulator-modal');
+    }
+
+    // Connect Role Grid Selection
+    document.querySelectorAll('.sim-role-card').forEach(function(card){
+      card.addEventListener('click', function(){
+        document.querySelectorAll('.sim-role-card').forEach(c => c.classList.remove('active'));
+        this.classList.add('active');
+        simActiveRole = this.getAttribute('data-role');
+      });
+    });
+
+    document.getElementById('btn-close-simulator').addEventListener('click', function(){ 
+      closeModal('simulator-modal'); 
+      stopMicSimulation();
+    });
+
+    // Start Simulation Grill
+    document.getElementById('btn-sim-start-grill').addEventListener('click', function(){
+      currentQuestionIndex = Math.floor(Math.random() * questionsBank[simActiveRole].length);
+      setupSimulatorInterviewPage();
+      showSimulatorStep(2);
+    });
+
+    function showSimulatorStep(stepNum) {
+      simStep = stepNum;
+      document.querySelectorAll('.sim-step-view').forEach(function(view){
+        view.classList.remove('active');
+      });
+      if(stepNum === 1) document.getElementById('sim-step-role').classList.add('active');
+      if(stepNum === 2) document.getElementById('sim-step-interview').classList.add('active');
+      if(stepNum === 3) document.getElementById('sim-step-thinking').classList.add('active');
+      if(stepNum === 4) document.getElementById('sim-step-feedback').classList.add('active');
+    }
+
+    function setupSimulatorInterviewPage() {
+      var question = questionsBank[simActiveRole][currentQuestionIndex];
+      document.getElementById('sim-active-question').textContent = question;
+      document.getElementById('sim-response-input').value = '';
+      stopMicSimulation();
+    }
+
+    // ── ANSWER MICROPHONE SIMULATION ──
+    document.getElementById('btn-sim-mic').addEventListener('click', function(){
+      if (!simMicStreamActive) {
+        startMicSimulation();
+      } else {
+        stopMicSimulation();
+      }
+    });
+
+    function startMicSimulation() {
+      simMicStreamActive = true;
+      var btn = document.getElementById('btn-sim-mic');
+      btn.innerHTML = '<i class="ti ti-microphone-off"></i> Stop Recording';
+      btn.className = 'sim-btn sim-btn-danger';
+      
+      document.getElementById('sim-mic-canvas-wrap').style.display = 'block';
+      showToast('Recording audio... Start speaking.', 'info');
+      
+      // Start drawing canvas wave
+      var canvas = document.getElementById('sim-mic-canvas');
+      var ctx = canvas.getContext('2d');
+      var width = canvas.width = canvas.parentElement.offsetWidth;
+      var height = canvas.height = 40;
+      
+      var phase = 0;
+      function draw() {
+        if (!simMicStreamActive) return;
+        ctx.clearRect(0, 0, width, height);
+        ctx.strokeStyle = '#818cf8';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        
+        for (var i = 0; i < width; i++) {
+          var x = i;
+          var normX = i / width;
+          // Math sine logic
+          var y = (height / 2) + Math.sin(normX * 12 + phase) * (Math.sin(phase * 2) * 12) * Math.sin(normX * Math.PI);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+        phase += 0.15;
+        simMicAnimFrame = requestAnimationFrame(draw);
+      }
+      draw();
+    }
+
+    function stopMicSimulation() {
+      simMicStreamActive = false;
+      cancelAnimationFrame(simMicAnimFrame);
+      
+      var btn = document.getElementById('btn-sim-mic');
+      if (btn) {
+        btn.innerHTML = '<i class="ti ti-microphone"></i> Answer via Mic';
+        btn.className = 'sim-btn sim-btn-secondary';
+      }
+      
+      var canvasWrap = document.getElementById('sim-mic-canvas-wrap');
+      if (canvasWrap) canvasWrap.style.display = 'none';
+
+      // Type out a mock audio transcription if clicked
+      var input = document.getElementById('sim-response-input');
+      if (input && input.value === '') {
+        input.value = "Transcribing voice: ";
+        var responseText = getMockAnswerForRole(simActiveRole);
+        var curIdx = 0;
+        
+        var typer = setInterval(function(){
+          if (curIdx < responseText.length) {
+            input.value += responseText[curIdx];
+            curIdx++;
+          } else {
+            clearInterval(typer);
+            input.value = responseText; // Clean up
+            showToast('Voice transcription compiled.', 'success');
+          }
+        }, 12);
+      }
+    }
+
+    // Auto-fill answers helper
+    document.getElementById('btn-sim-autoanswer').addEventListener('click', function(){
+      var text = getMockAnswerForRole(simActiveRole);
+      document.getElementById('sim-response-input').value = text;
+      showToast('Structured answer populated.', 'info');
+    });
+
+    function getMockAnswerForRole(role) {
+      if (role === 'backend') {
+        return "To scale systems horizontally, we deploy stateless application servers behind load balancers like Nginx. SQL databases can be sharded horizontally based on a tenant ID or shard key hash, redirecting read/write queries to split partitions. Cache-aside structures first query Redis; if a cache miss happens, data is loaded from SQL and cached. This reduces load significantly.";
+      } else if (role === 'dsa') {
+        return "We can track longest consecutive integer sequences using a HashSet. First, populate the set with all array inputs. Next, iterate through elements. If element-1 is absent, this element represents the sequence head. Loop incrementing values to calculate streak size. This ensures each item is processed at most twice, validating O(n) runtime complexity.";
+      } else if (role === 'behavioral') {
+        return "Situation: At my last internship, a senior developer suggested deploying client-side caching directly on endpoints, which compromised active session authentication. Task: I needed to clarify validation risks without sounding argumentative. Action: I benchmarked API access latency and prepared a demo detailing data leaks. Result: We agreed on a server Redis cache, maintaining sub-30ms performance and 100% security.";
+      } else {
+        return "To scale Netflix globally, we use DNS Geo-routing alongside CDNs (Open Connect) to cache raw MP4 streams at local edge routers. User profile metadata fits relational databases with replication, while stream bookmark metrics utilize Cassandra database key-values for rapid writes. Rate limiters sit at the API Gateway using Token Bucket algorithms.";
+      }
+    }
+
+    // Submit Answer
+    document.getElementById('btn-sim-submit').addEventListener('click', function(){
+      var ans = document.getElementById('sim-response-input').value.trim();
+      if (!ans || ans.length < 15) {
+        showToast('Please draft a complete explanation (minimum 15 characters).', 'error');
+        return;
+      }
+
+      stopMicSimulation();
+      showSimulatorStep(3);
+
+      // Random thinking steps simulation
+      var statuses = [
+        "Validating STAR structural logic...",
+        "Evaluating technical depth keywords...",
+        "Measuring readability and expression clarity...",
+        "Generating optimization suggestions..."
+      ];
+      
+      var sIdx = 0;
+      var statusInterval = setInterval(function(){
+        if(statuses[sIdx]) {
+          document.getElementById('sim-thinking-status').textContent = statuses[sIdx];
+          sIdx++;
+        }
+      }, 700);
+
+      setTimeout(function(){
+        clearInterval(statusInterval);
+        compileInterviewResults(ans);
+      }, 3000);
+    });
+
+    // Score compilations
+    var finalSessionData = {};
+
+    function compileInterviewResults(answer) {
+      // Calculate scores dynamically based on content length and keywords
+      var clarity = 75 + Math.min(20, Math.floor(answer.length / 30));
+      var depth = 65;
+      
+      var lower = answer.toLowerCase();
+      var keywords = ["scale", "redis", "dsa", "cache", "hash", "star", "load", "latency", "cdn", "index", "complexity"];
+      var matchCount = 0;
+      keywords.forEach(function(kw){
+        if(lower.includes(kw)) matchCount++;
+      });
+
+      depth += (matchCount * 3);
+      depth = Math.min(98, depth);
+      
+      var usesStar = lower.includes("situation") || lower.includes("action") || lower.includes("result") || lower.includes("then");
+      var overall = Math.round((clarity + depth + (usesStar ? 95 : 60)) / 3);
+
+      // Save global data state
+      var roleNames = { backend: 'Backend SDE', dsa: 'DSA Algorithms', behavioral: 'STAR Behavioural', system: 'System Design Scaling' };
+      var badgeLevels = overall >= 85 ? 'Master' : (overall >= 75 ? 'Proficient' : 'Improving');
+      var badgeColors = overall >= 85 ? 'bg' : (overall >= 75 ? 'bb' : 'by');
+      
+      var keyTopics = {
+        backend: "Scalability structures and SQL Sharding details.",
+        dsa: "Sequential indexing and hashing complexes.",
+        behavioral: "Conflict resolution STAR response methodologies.",
+        system: "Edge cache configurations and replication architectures."
+      };
+
+      finalSessionData = {
+        id: mockSessions.length + 1,
+        type: simActiveRole,
+        name: `${roleNames[simActiveRole]} — ${keyTopics[simActiveRole].split(' ')[0]} practice`,
+        score: overall,
+        communication: clarity,
+        depth: depth,
+        badge: badgeLevels,
+        bcolor: badgeColors,
+        analysis: `AI Analysis: Good grasp on key terms. Communication rate graded at ${clarity}%. ${usesStar ? 'Successfully structured response using STAR.' : 'Structuring feedback: consider organizing next replies explicitly around Situation, Task, Action, and Results.'}`
+      };
+
+      // Populate UI feedback results
+      document.getElementById('sim-feedback-score-value').textContent = overall;
+      document.getElementById('sim-feedback-clarity').textContent = clarity + '%';
+      document.getElementById('sim-feedback-depth').textContent = depth + '%';
+      
+      var starIcon = document.getElementById('sim-feedback-star');
+      if (usesStar) {
+        starIcon.innerHTML = '<i class="ti ti-circle-check" style="color:var(--text-success)"></i> Passed';
+      } else {
+        starIcon.innerHTML = '<i class="ti ti-circle-x" style="color:var(--text-warning)"></i> Missing';
+      }
+
+      document.getElementById('sim-feedback-keywords').textContent = Math.round((matchCount / keywords.length) * 100) + '%';
+
+      var bullets = document.getElementById('sim-feedback-bullets');
+      bullets.innerHTML = '';
+      var bulletItems = [
+        `Provided structured answers comprising ${answer.split(' ').length} words.`,
+        `Identified ${matchCount} primary domain technical keyword indicators.`,
+        usesStar ? "Adhered to structural STAR constraints effectively." : "Structuring suggestion: explicit situation details would elevate response context.",
+        `Communication depth graded as ${badgeLevels}. Recommendation: review system failure edge cases.`
+      ];
+      
+      bulletItems.forEach(function(item){
+        var li = document.createElement('li');
+        li.textContent = item;
+        bullets.appendChild(li);
+      });
+
+      showSimulatorStep(4);
+
+      // Animate circular SVG indicator gauge
+      setTimeout(function(){
+        var circle = document.getElementById('sim-feedback-score-circle');
+        // SVG circle perimeter is 2 * PI * r = 2 * 3.14159 * 45 = 282.7
+        var offset = 282.6 - (282.6 * overall / 100);
+        circle.style.strokeDashoffset = offset;
+      }, 100);
+    }
+
+    // Try another question
+    document.getElementById('btn-sim-restart').addEventListener('click', function(){
+      currentQuestionIndex = Math.floor(Math.random() * questionsBank[simActiveRole].length);
+      setupSimulatorInterviewPage();
+      showSimulatorStep(2);
+    });
+
+    // Save session back to dashboard stats
+    document.getElementById('btn-sim-save').addEventListener('click', function(){
+      mockSessions.unshift(finalSessionData); // Appends to top
+      showToast('Mock session saved to Dashboard records!', 'success');
+      closeModal('simulator-modal');
+      
+      // Auto switch back to dashboard tab to show results
+      switchToDashboardTab('dashboard');
+    });
+
+    // Intersection scroll reveal trigger
+    var revealObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          e.target.classList.add('revealed');
+          revealObserver.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal-item').forEach(function(el){
+      revealObserver.observe(el);
+    });
+
+    // Trigger animations for static features
+    document.querySelectorAll('.fcard, .tcard, .hstep').forEach(function(el, i){
+      el.classList.add('reveal-item');
+      el.style.transitionDelay = (i * 0.05) + 's';
+      revealObserver.observe(el);
+    });
+
+  })();
+  </script>
+
+  <!-- SOFT AURORA WEBGL DYNAMIC BACKGROUND LOGIC -->
+  <!-- Minimal self-contained OGL subset (Renderer, Program, Mesh, Triangle) -->
+  <!-- Inlined so the aurora works from file:// without a dev server -->
+  <script>
+  (function(global) {
+    'use strict';
+
+    class Renderer {
+      constructor({ alpha = false, premultipliedAlpha = true } = {}) {
+        this.canvas = document.createElement('canvas');
+        const gl = this.canvas.getContext('webgl', { alpha, premultipliedAlpha }) ||
+                   this.canvas.getContext('experimental-webgl', { alpha, premultipliedAlpha });
+        if (!gl) throw new Error('WebGL not supported');
+        this.gl = gl;
+        // gl.canvas is a native read-only getter that already points to this.canvas
+      }
+      setSize(width, height) {
+        this.canvas.width = width;
+        this.canvas.height = height;
+        this.gl.viewport(0, 0, width, height);
+      }
+      render({ scene }) {
+        const gl = this.gl;
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        scene.draw();
+      }
+    }
+
+    class Program {
+      constructor(gl, { vertex, fragment, uniforms = {} } = {}) {
+        this.gl = gl;
+        this.uniforms = uniforms;
+        const vs = this._compile(gl.VERTEX_SHADER, vertex);
+        const fs = this._compile(gl.FRAGMENT_SHADER, fragment);
+        this.program = gl.createProgram();
+        gl.attachShader(this.program, vs);
+        gl.attachShader(this.program, fs);
+        gl.linkProgram(this.program);
+        if (!gl.getProgramParameter(this.program, gl.LINK_STATUS))
+          throw new Error('Program link error: ' + gl.getProgramInfoLog(this.program));
+        gl.deleteShader(vs);
+        gl.deleteShader(fs);
+        // Cache uniform locations
+        this._ulocs = {};
+        const n = gl.getProgramParameter(this.program, gl.ACTIVE_UNIFORMS);
+        for (let i = 0; i < n; i++) {
+          const info = gl.getActiveUniform(this.program, i);
+          this._ulocs[info.name] = gl.getUniformLocation(this.program, info.name);
+        }
+      }
+      _compile(type, src) {
+        const gl = this.gl;
+        const shader = gl.createShader(type);
+        gl.shaderSource(shader, src);
+        gl.compileShader(shader);
+        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS))
+          throw new Error('Shader compile error: ' + gl.getShaderInfoLog(shader));
+        return shader;
+      }
+      use() {
+        this.gl.useProgram(this.program);
+        this._applyUniforms();
+      }
+      _applyUniforms() {
+        const gl = this.gl;
+        for (const [name, u] of Object.entries(this.uniforms)) {
+          const loc = this._ulocs[name];
+          if (loc == null) continue;
+          const v = u.value;
+          if (typeof v === 'number')          { gl.uniform1f(loc, v); }
+          else if (typeof v === 'boolean')    { gl.uniform1i(loc, v ? 1 : 0); }
+          else if (v instanceof Float32Array) {
+            if (v.length === 2)      gl.uniform2fv(loc, v);
+            else if (v.length === 3) gl.uniform3fv(loc, v);
+            else if (v.length === 4) gl.uniform4fv(loc, v);
+          }
+          else if (Array.isArray(v)) {
+            if (v.length === 2)      gl.uniform2fv(loc, v);
+            else if (v.length === 3) gl.uniform3fv(loc, v);
+            else if (v.length === 4) gl.uniform4fv(loc, v);
+          }
+        }
+      }
+    }
+
+    class Triangle {
+      constructor(gl) {
+        this.gl = gl;
+        // Full-screen triangle covering clip space
+        const verts = new Float32Array([-1, -1, 3, -1, -1, 3]);
+        this.vao = null;
+        this.positionBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, verts, gl.STATIC_DRAW);
+        this.count = 3;
+      }
+    }
+
+    class Mesh {
+      constructor(gl, { geometry, program } = {}) {
+        this.gl = gl;
+        this.geometry = geometry;
+        this.program = program;
+      }
+      draw() {
+        const gl = this.gl;
+        this.program.use();
+        // Bind position attribute
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.geometry.positionBuffer);
+        const prog = this.program.program;
+        const posLoc = gl.getAttribLocation(prog, 'position');
+        const uvLoc  = gl.getAttribLocation(prog, 'uv');
+        if (posLoc >= 0) {
+          gl.enableVertexAttribArray(posLoc);
+          gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
+        }
+        // uv = same as position for a clip-space triangle remapped 0-1
+        if (uvLoc >= 0) {
+          gl.enableVertexAttribArray(uvLoc);
+          gl.vertexAttribPointer(uvLoc, 2, gl.FLOAT, false, 0, 0);
+        }
+        gl.drawArrays(gl.TRIANGLES, 0, this.geometry.count);
+      }
+    }
+
+    global.OGL = { Renderer, Program, Mesh, Triangle };
+  })(window);
+  </script>
+
+  <script>
+    const { Renderer, Program, Mesh, Triangle } = window.OGL;
+
+    function hexToVec3(hex) {
+      const h = hex.replace('#', '');
+      return [
+        parseInt(h.slice(0, 2), 16) / 255,
+        parseInt(h.slice(2, 4), 16) / 255,
+        parseInt(h.slice(4, 6), 16) / 255
+      ];
+    }
+
+    const vertexShader = `
+      attribute vec2 uv;
+      attribute vec2 position;
+      varying vec2 vUv;
+      void main() {
+        vUv = uv;
+        gl_Position = vec4(position, 0, 1);
+      }
+    `;
+
+    const fragmentShader = `
+      precision highp float;
+
+      uniform float uTime;
+      uniform vec3 uResolution;
+      uniform float uSpeed;
+      uniform float uScale;
+      uniform float uBrightness;
+      uniform vec3 uColor1;
+      uniform vec3 uColor2;
+      uniform float uNoiseFreq;
+      uniform float uNoiseAmp;
+      uniform float uBandHeight;
+      uniform float uBandSpread;
+      uniform float uOctaveDecay;
+      uniform float uLayerOffset;
+      uniform float uColorSpeed;
+      uniform vec2 uMouse;
+      uniform float uMouseInfluence;
+      uniform bool uEnableMouse;
+
+      #define TAU 6.28318
+
+      vec3 gradientHash(vec3 p) {
+        p = vec3(
+          dot(p, vec3(127.1, 311.7, 234.6)),
+          dot(p, vec3(269.5, 183.3, 198.3)),
+          dot(p, vec3(169.5, 283.3, 156.9))
+        );
+        vec3 h = fract(sin(p) * 43758.5453123);
+        float phi = acos(2.0 * h.x - 1.0);
+        float theta = TAU * h.y;
+        return vec3(cos(theta) * sin(phi), sin(theta) * cos(phi), cos(phi));
+      }
+
+      float quinticSmooth(float t) {
+        float t2 = t * t;
+        float t3 = t * t2;
+        return 6.0 * t3 * t2 - 15.0 * t2 * t2 + 10.0 * t3;
+      }
+
+      vec3 cosineGradient(float t, vec3 a, vec3 b, vec3 c, vec3 d) {
+        return a + b * cos(TAU * (c * t + d));
+      }
+
+      float perlin3D(float amplitude, float frequency, float px, float py, float pz) {
+        float x = px * frequency;
+        float y = py * frequency;
+
+        float fx = floor(x); float fy = floor(y); float fz = floor(pz);
+        float cx = ceil(x);  float cy = ceil(y);  float cz = ceil(pz);
+
+        vec3 g000 = gradientHash(vec3(fx, fy, fz));
+        vec3 g100 = gradientHash(vec3(cx, fy, fz));
+        vec3 g010 = gradientHash(vec3(fx, cy, fz));
+        vec3 g110 = gradientHash(vec3(cx, cy, fz));
+        vec3 g001 = gradientHash(vec3(fx, fy, cz));
+        vec3 g101 = gradientHash(vec3(cx, fy, cz));
+        vec3 g011 = gradientHash(vec3(fx, cy, cz));
+        vec3 g111 = gradientHash(vec3(cx, cy, cz));
+
+        float d000 = dot(g000, vec3(x - fx, y - fy, pz - fz));
+        float d100 = dot(g100, vec3(x - cx, y - fy, pz - fz));
+        float d010 = dot(g010, vec3(x - fx, y - cy, pz - fz));
+        float d110 = dot(g110, vec3(x - cx, y - cy, pz - fz));
+        float d001 = dot(g001, vec3(x - fx, y - fy, pz - cz));
+        float d101 = dot(g101, vec3(x - cx, y - fy, pz - cz));
+        float d011 = dot(g011, vec3(x - fx, y - cy, pz - cz));
+        float d111 = dot(g111, vec3(x - cx, y - cy, pz - cz));
+
+        float sx = quinticSmooth(x - fx);
+        float sy = quinticSmooth(y - fy);
+        float sz = quinticSmooth(pz - fz);
+
+        float lx00 = mix(d000, d100, sx);
+        float lx10 = mix(d010, d110, sx);
+        float lx01 = mix(d001, d101, sx);
+        float lx11 = mix(d011, d111, sx);
+
+        float ly0 = mix(lx00, lx10, sy);
+        float ly1 = mix(lx01, lx11, sy);
+
+        return amplitude * mix(ly0, ly1, sz);
+      }
+
+      float auroraGlow(float t, vec2 shift) {
+        vec2 uv = gl_FragCoord.xy / uResolution.y;
+        uv += shift;
+
+        float noiseVal = 0.0;
+        float freq = uNoiseFreq;
+        float amp = uNoiseAmp;
+        vec2 samplePos = uv * uScale;
+
+        for (float i = 0.0; i < 3.0; i += 1.0) {
+          noiseVal += perlin3D(amp, freq, samplePos.x, samplePos.y, t);
+          amp *= uOctaveDecay;
+          freq *= 2.0;
+        }
+
+        float yBand = uv.y * 10.0 - uBandHeight * 10.0;
+        return 0.3 * max(exp(uBandSpread * (1.0 - 1.1 * abs(noiseVal + yBand))), 0.0);
+      }
+
+      void main() {
+        vec2 uv = gl_FragCoord.xy / uResolution.xy;
+        float t = uSpeed * 0.4 * uTime;
+
+        vec2 shift = vec2(0.0);
+        if (uEnableMouse) {
+          shift = (uMouse - 0.5) * uMouseInfluence;
+        }
+
+        vec3 col = vec3(0.0);
+        col += 0.99 * auroraGlow(t, shift) * cosineGradient(uv.x + uTime * uSpeed * 0.2 * uColorSpeed, vec3(0.5), vec3(0.5), vec3(1.0), vec3(0.3, 0.20, 0.20)) * uColor1;
+        col += 0.99 * auroraGlow(t + uLayerOffset, shift) * cosineGradient(uv.x + uTime * uSpeed * 0.1 * uColorSpeed, vec3(0.5), vec3(0.5), vec3(2.0, 1.0, 0.0), vec3(0.5, 0.20, 0.25)) * uColor2;
+
+        col *= uBrightness;
+        float alpha = clamp(length(col), 0.0, 1.0);
+        gl_FragColor = vec4(col, alpha);
+      }
+    `;
+
+    // Props — tuned to match the Midnight dark theme palette
+    // color1: blue  → matches accent-gradient start (#3b82f6)
+    // color2: violet/magenta → matches accent-gradient end (#d946ef)
+    // Slow, wide, low-sitting bands: ambient glow, not distracting
+    const props = {
+      speed: 0.32,
+      scale: 1.0,
+      brightness: 1.4,
+      color1: '#a855f7',
+      color2: '#ec4899',
+      noiseFrequency: 1.5,
+      noiseAmplitude: 1.2,
+      bandHeight: 0.45,
+      bandSpread: 1.8,
+      octaveDecay: 0.55,
+      layerOffset: 1.5,
+      colorSpeed: 0.5,
+      enableMouseInteraction: true,
+      mouseInfluence: 0.12
+    };
+
+    const container = document.getElementById('aurora-bg');
+    if (container) {
+      const renderer = new Renderer({ alpha: true, premultipliedAlpha: false });
+      const gl = renderer.gl;
+      gl.clearColor(0, 0, 0, 0);
+
+      let program;
+      let currentMouse = [0.5, 0.5];
+      let targetMouse = [0.5, 0.5];
+
+      function handleMouseMove(e) {
+        const rect = gl.canvas.getBoundingClientRect();
+        targetMouse = [
+          (e.clientX - rect.left) / rect.width,
+          1.0 - (e.clientY - rect.top) / rect.height
+        ];
+      }
+
+      function handleMouseLeave() {
+        targetMouse = [0.5, 0.5];
+      }
+
+      function resize() {
+        renderer.setSize(container.offsetWidth, container.offsetHeight);
+        if (program) {
+          program.uniforms.uResolution.value = [gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas.height];
+        }
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      const geometry = new Triangle(gl);
+      program = new Program(gl, {
+        vertex: vertexShader,
+        fragment: fragmentShader,
+        uniforms: {
+          uTime: { value: 0 },
+          uResolution: { value: [gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas.height] },
+          uSpeed: { value: props.speed },
+          uScale: { value: props.scale },
+          uBrightness: { value: props.brightness },
+          uColor1: { value: hexToVec3(props.color1) },
+          uColor2: { value: hexToVec3(props.color2) },
+          uNoiseFreq: { value: props.noiseFrequency },
+          uNoiseAmp: { value: props.noiseAmplitude },
+          uBandHeight: { value: props.bandHeight },
+          uBandSpread: { value: props.bandSpread },
+          uOctaveDecay: { value: props.octaveDecay },
+          uLayerOffset: { value: props.layerOffset },
+          uColorSpeed: { value: props.colorSpeed },
+          uMouse: { value: new Float32Array([0.5, 0.5]) },
+          uMouseInfluence: { value: props.mouseInfluence },
+          uEnableMouse: { value: props.enableMouseInteraction }
+        }
+      });
+
+      const mesh = new Mesh(gl, { geometry, program });
+      container.appendChild(gl.canvas);
+
+      if (props.enableMouseInteraction) {
+        window.addEventListener('mousemove', handleMouseMove);
+        window.addEventListener('mouseleave', handleMouseLeave);
+      }
+
+      let animationFrameId;
+
+      function update(time) {
+        animationFrameId = requestAnimationFrame(update);
+        program.uniforms.uTime.value = time * 0.001;
+
+        if (props.enableMouseInteraction) {
+          currentMouse[0] += 0.05 * (targetMouse[0] - currentMouse[0]);
+          currentMouse[1] += 0.05 * (targetMouse[1] - currentMouse[1]);
+          program.uniforms.uMouse.value[0] = currentMouse[0];
+          program.uniforms.uMouse.value[1] = currentMouse[1];
+        } else {
+          program.uniforms.uMouse.value[0] = 0.5;
+          program.uniforms.uMouse.value[1] = 0.5;
+        }
+
+        renderer.render({ scene: mesh });
+      }
+      animationFrameId = requestAnimationFrame(update);
+
+      // Expose color changes globally (kept for backward compat)
+      window.updateAuroraColors = function(c1, c2) {
+        if (program) {
+          program.uniforms.uColor1.value = hexToVec3(c1);
+          program.uniforms.uColor2.value = hexToVec3(c2);
+        }
+      };
+
+      // Full props update — pass any subset of props to update live
+      window.updateAuroraProps = function(newProps) {
+        if (!program) return;
+        const p = newProps;
+        if (p.color1 !== undefined)         program.uniforms.uColor1.value         = hexToVec3(p.color1);
+        if (p.color2 !== undefined)         program.uniforms.uColor2.value         = hexToVec3(p.color2);
+        if (p.speed !== undefined)          program.uniforms.uSpeed.value          = p.speed;
+        if (p.scale !== undefined)          program.uniforms.uScale.value          = p.scale;
+        if (p.brightness !== undefined)     program.uniforms.uBrightness.value     = p.brightness;
+        if (p.noiseFrequency !== undefined) program.uniforms.uNoiseFreq.value      = p.noiseFrequency;
+        if (p.noiseAmplitude !== undefined) program.uniforms.uNoiseAmp.value       = p.noiseAmplitude;
+        if (p.bandHeight !== undefined)     program.uniforms.uBandHeight.value     = p.bandHeight;
+        if (p.bandSpread !== undefined)     program.uniforms.uBandSpread.value     = p.bandSpread;
+        if (p.octaveDecay !== undefined)    program.uniforms.uOctaveDecay.value    = p.octaveDecay;
+        if (p.layerOffset !== undefined)    program.uniforms.uLayerOffset.value    = p.layerOffset;
+        if (p.colorSpeed !== undefined)     program.uniforms.uColorSpeed.value     = p.colorSpeed;
+        if (p.mouseInfluence !== undefined) program.uniforms.uMouseInfluence.value = p.mouseInfluence;
+      };
+    }
+  </script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/oauth.js"></script>
+
+</body>
+</html>
