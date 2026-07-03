@@ -15,6 +15,13 @@ def login_user(email, password):
             "message": "Invalid email or password"
         }, 401
 
+    # Check if OAuth-only user
+    if user.password is None:
+        return {
+            "success": False,
+            "message": "This account uses Google/GitHub sign-in. Please log in that way."
+        }, 401
+
     # Check password
     if not bcrypt.check_password_hash(user.password, password):
         return {
